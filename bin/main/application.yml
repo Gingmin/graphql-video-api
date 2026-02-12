@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: gingflix
+
+  graphql:
+    graphiql:
+      enabled: true
+

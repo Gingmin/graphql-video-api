@@ -1,0 +1,15 @@
+/build/
+/.gradle/
+/out/
+/.idea/
+/.vscode/
+.classpath
+.project
+.settings/
+*.iml
+/target
+
+# frontend
+/frontend/node_modules/
+/frontend/dist/
+
