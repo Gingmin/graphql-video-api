@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import "@/styles/app.scss";
+
 type GqlResponse<T> = {
     data?: T;
     errors?: Array<{ message: string }>;
@@ -9,7 +11,7 @@ async function gql<T>(query: string, variables?: Record<string, unknown>): Promi
     const res = await fetch("/graphql", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, variables })
+        body: JSON.stringify({ query, variables }),
     });
 
     const json = (await res.json()) as GqlResponse<T>;
@@ -61,4 +63,3 @@ export function App() {
         </div>
     );
 }
-
