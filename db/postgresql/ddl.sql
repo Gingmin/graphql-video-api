@@ -20,93 +20,6 @@ COMMENT ON COLUMN users.modified_at IS '수정일';
 COMMENT ON COLUMN users.is_deleted IS '삭제여부';
 COMMENT ON TABLE users IS '유저';
 
-DROP TABLE IF EXISTS profiles CASCADE;
-CREATE TABLE profiles
-(
-    id bigserial primary key,
-    user_id bigint not null references users(id) on delete cascade,
-    name varchar(255) not null,
-    profile_type varchar(15) not null check (profile_type in ('GENERAL', 'KIDS')),
-    thumbnail_file_id bigint references files(id) on delete set null,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    UNIQUE (user_id, name)
-);
-COMMENT ON COLUMN profiles.id IS 'id';
-COMMENT ON COLUMN profiles.user_id IS '유저 (아이디)';
-COMMENT ON COLUMN profiles.name IS '이름';
-COMMENT ON COLUMN profiles.profile_type IS '프로필 타입 (일반, 키즈)';
-COMMENT ON COLUMN profiles.thumbnail_file_id IS '썸네일 사진 (아이디)';
-COMMENT ON COLUMN profiles.created_at IS '생성일';
-COMMENT ON COLUMN profiles.modified_at IS '수정일';
-COMMENT ON COLUMN profiles.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_profiles_user_id_and_name ON profiles IS '유저 아이디와 이름 고유 제약조건';
-COMMENT ON TABLE profiles IS '프로필';
-
-DROP TABLE IF EXISTS wishlists CASCADE;
-CREATE TABLE wishlists
-(
-    id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
-    profile_id bigint not null references profiles(id) on delete cascade,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    UNIQUE (content_id, profile_id)
-);
-COMMENT ON COLUMN wishlists.id IS 'id';
-COMMENT ON COLUMN wishlists.content_id IS '콘텐츠 (아이디)';
-COMMENT ON COLUMN wishlists.profile_id IS '유저 프로필 (아이디)';
-COMMENT ON COLUMN wishlists.created_at IS '생성일';
-COMMENT ON COLUMN wishlists.modified_at IS '수정일';
-COMMENT ON COLUMN wishlists.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_wishlists_content_id_and_profile_id ON wishlists IS '콘텐츠 아이디와 유저 프로필 아이디 고유 제약조건';
-COMMENT ON TABLE wishlists IS '찜목록';
-
-DROP TABLE IF EXISTS evaluation_codes CASCADE;
-CREATE TABLE evaluation_codes
-(
-    id bigserial primary key,
-    evaluation varchar(15) not null check (evaluation in ('EXCELLENT', 'LIKE', 'DISLIKE')),
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    UNIQUE (evaluation)
-);
-COMMENT ON COLUMN evaluation_codes.id IS 'id';
-COMMENT ON COLUMN evaluation_codes.evaluation IS '평가';
-COMMENT ON COLUMN evaluation_codes.created_at IS '생성일';
-COMMENT ON COLUMN evaluation_codes.modified_at IS '수정일';
-COMMENT ON COLUMN evaluation_codes.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_evaluation_codes_evaluation ON evaluation_codes IS '평가 코드 고유 제약조건';
-COMMENT ON TABLE evaluation_codes IS '평가 코드';
-
-INSERT INTO evaluation_codes (evaluation)
-values ('EXCELLENT'), ('LIKE'), ('DISLIKE');
-
-DROP TABLE IF EXISTS evaluations CASCADE;
-CREATE TABLE evaluations
-(
-    id bigserial primary key,
-    evaluation_codes_id bigint not null references evaluation_codes(id) on delete cascade,
-    content_id bigint not null references contents(id) on delete cascade,
-    profile_id bigint not null references profiles(id) on delete cascade,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    UNIQUE (content_id, profile_id)
-);
-COMMENT ON COLUMN evaluations.id IS 'id';
-COMMENT ON COLUMN evaluations.evaluation_codes_id IS '평가 코드 (아이디)';
-COMMENT ON COLUMN evaluations.content_id IS '콘텐츠 (아이디)';
-COMMENT ON COLUMN evaluations.profile_id IS '유저 프로필 (아이디)';
-COMMENT ON COLUMN evaluations.created_at IS '생성일';
-COMMENT ON COLUMN evaluations.modified_at IS '수정일';
-COMMENT ON COLUMN evaluations.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_evaluations_content_id_and_profile_id ON evaluations IS '콘텐츠 아이디와 유저 프로필 아이디 고유 제약조건';
-COMMENT ON TABLE evaluations IS '평가';
-
 DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files
 (
@@ -133,45 +46,29 @@ COMMENT ON COLUMN files.modified_at IS '수정일';
 COMMENT ON COLUMN files.is_deleted IS '삭제여부';
 COMMENT ON TABLE files IS '파일';
 
-DROP TABLE IF EXISTS subtitles CASCADE;
-CREATE TABLE subtitles
+DROP TABLE IF EXISTS profiles CASCADE;
+CREATE TABLE profiles
 (
     id bigserial primary key,
-    language_type varchar(10) not null check (language_type in ('KO', 'EN')),
-    subtitle_file_id bigint not null references files(id) on delete cascade,
-    video_id bigint references videos(id) on delete set null,
+    user_id bigint not null references users(id) on delete cascade,
+    name varchar(255) not null,
+    profile_type varchar(15) not null check (profile_type in ('GENERAL', 'KIDS')),
+    thumbnail_file_id bigint references files(id) on delete set null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (language_type, subtitle_file_id, video_id)
+    CONSTRAINT uq_profiles_user_id_and_name UNIQUE (user_id, name)
 );
-COMMENT ON COLUMN subtitles.id IS 'id';
-COMMENT ON COLUMN subtitles.language_type IS '언어 타입';
-COMMENT ON COLUMN subtitles.subtitle_file_id IS '파일 (아이디)';
-COMMENT ON COLUMN subtitles.video_id IS '비디오 (아이디)';
-COMMENT ON COLUMN subtitles.created_at IS '생성일';
-COMMENT ON COLUMN subtitles.modified_at IS '수정일';
-COMMENT ON COLUMN subtitles.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_subtitles_language_type_and_subtitle_file_id_and_video_id ON subtitles IS '언어 타입, 파일 아이디, 비디오 아이디 고유 제약조건';
-COMMENT ON TABLE subtitles IS '자막';
-
-DROP TABLE IF EXISTS videos CASCADE;
-CREATE TABLE videos
-(
-    id bigserial primary key,
-    video_file_id bigint not null references files(id) on delete cascade,
-    cumulative_viewing_time bigint,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false
-);
-COMMENT ON COLUMN videos.id IS 'id';
-COMMENT ON COLUMN videos.video_file_id IS '비디오 파일 (아이디)';
-COMMENT ON COLUMN videos.cumulative_viewing_time IS '누적 시청시간';
-COMMENT ON COLUMN videos.created_at IS '생성일';
-COMMENT ON COLUMN videos.modified_at IS '수정일';
-COMMENT ON COLUMN videos.is_deleted IS '삭제여부';
-COMMENT ON TABLE videos IS '비디오';
+COMMENT ON COLUMN profiles.id IS 'id';
+COMMENT ON COLUMN profiles.user_id IS '유저 (아이디)';
+COMMENT ON COLUMN profiles.name IS '이름';
+COMMENT ON COLUMN profiles.profile_type IS '프로필 타입 (일반, 키즈)';
+COMMENT ON COLUMN profiles.thumbnail_file_id IS '썸네일 사진 (아이디)';
+COMMENT ON COLUMN profiles.created_at IS '생성일';
+COMMENT ON COLUMN profiles.modified_at IS '수정일';
+COMMENT ON COLUMN profiles.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_profiles_user_id_and_name ON profiles IS '유저 아이디와 이름 고유 제약조건';
+COMMENT ON TABLE profiles IS '프로필';
 
 DROP TABLE IF EXISTS contents CASCADE;
 CREATE TABLE contents
@@ -198,6 +95,109 @@ COMMENT ON COLUMN contents.created_at IS '생성일';
 COMMENT ON COLUMN contents.modified_at IS '수정일';
 COMMENT ON COLUMN contents.is_deleted IS '삭제여부';
 COMMENT ON TABLE contents IS '콘텐츠';
+
+DROP TABLE IF EXISTS wishlists CASCADE;
+CREATE TABLE wishlists
+(
+    id bigserial primary key,
+    content_id bigint not null references contents(id) on delete cascade,
+    profile_id bigint not null references profiles(id) on delete cascade,
+    created_at timestamptz not null default now(),
+    modified_at timestamptz not null default now(),
+    is_deleted boolean not null default false,
+    CONSTRAINT uq_wishlists_content_id_and_profile_id UNIQUE (content_id, profile_id)
+);
+COMMENT ON COLUMN wishlists.id IS 'id';
+COMMENT ON COLUMN wishlists.content_id IS '콘텐츠 (아이디)';
+COMMENT ON COLUMN wishlists.profile_id IS '유저 프로필 (아이디)';
+COMMENT ON COLUMN wishlists.created_at IS '생성일';
+COMMENT ON COLUMN wishlists.modified_at IS '수정일';
+COMMENT ON COLUMN wishlists.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_wishlists_content_id_and_profile_id ON wishlists IS '콘텐츠 아이디와 유저 프로필 아이디 고유 제약조건';
+COMMENT ON TABLE wishlists IS '찜목록';
+
+DROP TABLE IF EXISTS evaluation_codes CASCADE;
+CREATE TABLE evaluation_codes
+(
+    id bigserial primary key,
+    evaluation varchar(15) not null check (evaluation in ('EXCELLENT', 'LIKE', 'DISLIKE')),
+    created_at timestamptz not null default now(),
+    modified_at timestamptz not null default now(),
+    is_deleted boolean not null default false,
+    CONSTRAINT uq_evaluation_codes_evaluation UNIQUE (evaluation)
+);
+COMMENT ON COLUMN evaluation_codes.id IS 'id';
+COMMENT ON COLUMN evaluation_codes.evaluation IS '평가';
+COMMENT ON COLUMN evaluation_codes.created_at IS '생성일';
+COMMENT ON COLUMN evaluation_codes.modified_at IS '수정일';
+COMMENT ON COLUMN evaluation_codes.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_evaluation_codes_evaluation ON evaluation_codes IS '평가 코드 고유 제약조건';
+COMMENT ON TABLE evaluation_codes IS '평가 코드';
+
+INSERT INTO evaluation_codes (evaluation)
+values ('EXCELLENT'), ('LIKE'), ('DISLIKE');
+
+DROP TABLE IF EXISTS evaluations CASCADE;
+CREATE TABLE evaluations
+(
+    id bigserial primary key,
+    evaluation_codes_id bigint not null references evaluation_codes(id) on delete cascade,
+    content_id bigint not null references contents(id) on delete cascade,
+    profile_id bigint not null references profiles(id) on delete cascade,
+    created_at timestamptz not null default now(),
+    modified_at timestamptz not null default now(),
+    is_deleted boolean not null default false,
+    CONSTRAINT uq_evaluations_content_id_and_profile_id UNIQUE (content_id, profile_id)
+);
+COMMENT ON COLUMN evaluations.id IS 'id';
+COMMENT ON COLUMN evaluations.evaluation_codes_id IS '평가 코드 (아이디)';
+COMMENT ON COLUMN evaluations.content_id IS '콘텐츠 (아이디)';
+COMMENT ON COLUMN evaluations.profile_id IS '유저 프로필 (아이디)';
+COMMENT ON COLUMN evaluations.created_at IS '생성일';
+COMMENT ON COLUMN evaluations.modified_at IS '수정일';
+COMMENT ON COLUMN evaluations.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_evaluations_content_id_and_profile_id ON evaluations IS '콘텐츠 아이디와 유저 프로필 아이디 고유 제약조건';
+COMMENT ON TABLE evaluations IS '평가';
+
+DROP TABLE IF EXISTS videos CASCADE;
+CREATE TABLE videos
+(
+    id bigserial primary key,
+    video_file_id bigint not null references files(id) on delete cascade,
+    cumulative_viewing_time bigint,
+    created_at timestamptz not null default now(),
+    modified_at timestamptz not null default now(),
+    is_deleted boolean not null default false
+);
+COMMENT ON COLUMN videos.id IS 'id';
+COMMENT ON COLUMN videos.video_file_id IS '비디오 파일 (아이디)';
+COMMENT ON COLUMN videos.cumulative_viewing_time IS '누적 시청시간';
+COMMENT ON COLUMN videos.created_at IS '생성일';
+COMMENT ON COLUMN videos.modified_at IS '수정일';
+COMMENT ON COLUMN videos.is_deleted IS '삭제여부';
+COMMENT ON TABLE videos IS '비디오';
+
+DROP TABLE IF EXISTS subtitles CASCADE;
+CREATE TABLE subtitles
+(
+    id bigserial primary key,
+    language_type varchar(10) not null check (language_type in ('KO', 'EN')),
+    subtitle_file_id bigint not null references files(id) on delete cascade,
+    video_id bigint references videos(id) on delete set null,
+    created_at timestamptz not null default now(),
+    modified_at timestamptz not null default now(),
+    is_deleted boolean not null default false,
+    CONSTRAINT uq_subtitles_language_type_and_subtitle_file_id_and_video_id UNIQUE (language_type, subtitle_file_id, video_id)
+);
+COMMENT ON COLUMN subtitles.id IS 'id';
+COMMENT ON COLUMN subtitles.language_type IS '언어 타입';
+COMMENT ON COLUMN subtitles.subtitle_file_id IS '파일 (아이디)';
+COMMENT ON COLUMN subtitles.video_id IS '비디오 (아이디)';
+COMMENT ON COLUMN subtitles.created_at IS '생성일';
+COMMENT ON COLUMN subtitles.modified_at IS '수정일';
+COMMENT ON COLUMN subtitles.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_subtitles_language_type_and_subtitle_file_id_and_video_id ON subtitles IS '언어 타입, 파일 아이디, 비디오 아이디 고유 제약조건';
+COMMENT ON TABLE subtitles IS '자막';
 
 DROP TABLE IF EXISTS movies CASCADE;
 CREATE TABLE movies
@@ -248,7 +248,7 @@ CREATE TABLE seasons
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (series_id, season_number)
+    CONSTRAINT uq_seasons_series_id_and_season_number UNIQUE (series_id, season_number)
 );
 COMMENT ON COLUMN seasons.id IS 'id';
 COMMENT ON COLUMN seasons.series_id IS '시리즈 (아이디)';
@@ -274,7 +274,7 @@ CREATE TABLE episodes
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (season_id, episode_number)
+    CONSTRAINT uq_episodes_season_id_and_episode_number UNIQUE (season_id, episode_number)
 );
 COMMENT ON COLUMN episodes.id IS 'id';
 COMMENT ON COLUMN episodes.season_id IS '시즌 (아이디)';
@@ -314,7 +314,7 @@ CREATE TABLE content_genres
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (content_id, genre_id)
+    CONSTRAINT uq_content_genres_content_id_and_genre_id UNIQUE (content_id, genre_id)
 );
 COMMENT ON COLUMN content_genres.id IS 'id';
 COMMENT ON COLUMN content_genres.content_id IS '콘텐츠 (아이디)';
@@ -335,7 +335,7 @@ CREATE TABLE genre_translation
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (genre_id, language)
+    CONSTRAINT uq_genre_translation_genre_id_and_language UNIQUE (genre_id, language)
 );
 COMMENT ON COLUMN genre_translation.id IS 'id';
 COMMENT ON COLUMN genre_translation.genre_id IS '장르 (아이디)';
@@ -351,10 +351,11 @@ DROP TABLE IF EXISTS tags CASCADE;
 CREATE TABLE tags
 (
     id bigserial primary key,
-    code varchar(50) not null unique,
+    code varchar(50) not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false
+    is_deleted boolean not null default false,
+    CONSTRAINT uq_tags_code UNIQUE (code)
 );
 COMMENT ON COLUMN tags.id IS 'id';
 COMMENT ON COLUMN tags.code IS '코드';
@@ -373,7 +374,7 @@ CREATE TABLE content_tags
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (content_id, tag_id)
+    CONSTRAINT uq_content_tags_content_id_and_tag_id UNIQUE (content_id, tag_id)
 );
 COMMENT ON COLUMN content_tags.id IS 'id';
 COMMENT ON COLUMN content_tags.content_id IS '콘텐츠 (아이디)';
@@ -394,7 +395,7 @@ CREATE TABLE tag_translation
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (tag_id, language)
+    CONSTRAINT uq_tag_translation_tag_id_and_language UNIQUE (tag_id, language)
 );
 COMMENT ON COLUMN tag_translation.id IS 'id';
 COMMENT ON COLUMN tag_translation.tag_id IS '태그 (아이디)';
@@ -436,7 +437,7 @@ CREATE TABLE person_translation
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (person_id, language)
+    CONSTRAINT uq_person_translation_person_id_and_language UNIQUE (person_id, language)
 );
 COMMENT ON COLUMN person_translation.id IS 'id';
 COMMENT ON COLUMN person_translation.person_id IS '인물 (아이디)';
@@ -499,7 +500,7 @@ CREATE TABLE episode_watching
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (profile_id, episode_id)
+    CONSTRAINT uq_episode_watching_profile_id_and_episode_id UNIQUE (profile_id, episode_id)
 );
 COMMENT ON COLUMN episode_watching.id IS 'id';
 COMMENT ON COLUMN episode_watching.profile_id IS '유저 프로필 (아이디)';
@@ -523,7 +524,7 @@ CREATE TABLE movie_watching
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    UNIQUE (profile_id, movie_id)
+    CONSTRAINT uq_movie_watching_profile_id_and_movie_id UNIQUE (profile_id, movie_id)
 );
 COMMENT ON COLUMN movie_watching.id IS 'id';
 COMMENT ON COLUMN movie_watching.created_at IS '생성일';
