@@ -1,7 +1,1314 @@
-// #e50914
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html,
+body {
+    font-family:
+        "Helvetica Neue",
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        sans-serif;
+
+    background: #000;
+    max-width: 100%;
+    margin: 0;
+    -webkit-text-size-adjust: 100%;
+}
+
+.ui-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.ui-lang {
+    display: inline-flex;
+}
+
+.ui-lang__chrome {
+    position: relative;
+    display: inline-grid;
+    align-items: center;
+    grid-template-columns: 16px 1fr 16px;
+    column-gap: 0.5rem;
+
+    background: rgba(22, 22, 22, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 0.25rem;
+    height: 2rem;
+    padding: 0 0.75rem;
+    color: #fff;
+
+    &:focus-within {
+        border-color: rgba(255, 255, 255, 0.85);
+    }
+}
+
+.ui-lang__icon,
+.ui-lang__caret {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.ui-lang__select {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #fff;
+
+    font: inherit;
+    line-height: 1;
+    padding: 0;
+    min-width: 5.25rem;
+    cursor: pointer;
+}
+
+.ui-lang__value {
+    color: #fff;
+    font: inherit;
+    line-height: 1;
+    user-select: none;
+    min-width: 3.25rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+// select는 전체 클릭 영역을 확보하기 위해 투명 오버레이로 사용
+.ui-lang__select--overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    text-align: center;
+    text-align-last: center;
+}
+
+// Windows/Chrome: 옵션 팝업은 기본 흰 배경이 많아서 option은 검은 글자가 안전
+.ui-lang__select--overlay option {
+    color: #111;
+    background: #fff;
+    text-align: center;
+}
+
+.ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+
+    font: inherit;
+    font-weight: 600;
+    line-height: 1;
+
+    min-height: 2rem;
+    padding: 0.5rem 1rem;
+    // border-radius: 0.25rem;
+
+    border-width: 0.0625rem;
+    border-radius: calc(0.25rem - 0.0625rem);
+}
+
+.ui-btn--primary {
+    background: rgb(229, 9, 20);
+    color: #fff;
+
+    &:hover {
+        background: rgb(193, 17, 25);
+    }
+}
+
+.gingflix-sans-font-loaded {
+    font-family:
+        Helvetica Neue,
+        Segoe UI,
+        Roboto,
+        Ubuntu,
+        sans-serif;
+}
+
+// home
+.basic-layout {
+    word-break: keep-all;
+
+    .home-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+
+        width: 100%;
+        padding-top: 0;
+
+        .home-wrap {
+            z-index: 1;
+            position: relative;
+            width: 100%;
+
+            .gradient-area {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                -moz-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                height: 100%;
+                overflow: hidden;
+                width: 100%;
+                max-width: 100%;
+                z-index: -1;
+                > div:first-child {
+                    z-index: 1;
+                    position: absolute;
+                    top: 0;
+                    width: 165rem;
+                    left: 50%;
+                    bottom: 100px;
+                    background: radial-gradient(11% 56% at 17% 50%, #461518 0%, transparent 100%), radial-gradient(11% 56% at 83% 50%, #461518 0%, transparent 100%);
+                    -webkit-transform: translateX(-50%);
+                    -moz-transform: translateX(-50%);
+                    -ms-transform: translateX(-50%);
+                    transform: translateX(-50%);
+                }
+                > div:last-child {
+                    position: absolute;
+                    top: 0;
+                    left: calc(50% - 0.25rem);
+                    bottom: 100px;
+                    z-index: 2;
+                    background: linear-gradient(0deg, transparent 0%, #6f181d 50%, transparent 100%);
+                    width: 120.5rem;
+                    -webkit-transform: translate(calc(-50% + 0.25rem), 0px);
+                    -moz-transform: translate(calc(-50% + 0.25rem), 0px);
+                    -ms-transform: translate(calc(-50% + 0.25rem), 0px);
+                    transform: translate(calc(-50% + 0.25rem), 0px);
+                }
+            }
+
+            .home-wrap-header {
+                background: linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, 0.8) 0%,
+                    rgba(0, 0, 0, 0.7889) 8.333%,
+                    rgba(0, 0, 0, 0.7556) 16.67%,
+                    rgba(0, 0, 0, 0.7) 25%,
+                    rgba(0, 0, 0, 0.6222) 33.33%,
+                    rgba(0, 0, 0, 0.5222) 41.67%,
+                    rgba(0, 0, 0, 0.4) 50%,
+                    rgba(0, 0, 0, 0.2778) 58.33%,
+                    rgba(0, 0, 0, 0.1778) 66.67%,
+                    rgba(0, 0, 0, 0.1) 75%,
+                    rgba(0, 0, 0, 0.04444) 83.33%,
+                    rgba(0, 0, 0, 0.01111) 91.67%,
+                    rgba(0, 0, 0, 0) 100%
+                );
+                position: relative;
+                z-index: 2;
+                width: 100%;
+
+                .header-inner {
+                    padding: 0 1.5rem;
+                    width: 100%;
+                    max-width: 120rem;
+                    height: 7.5rem;
+                    margin: 0 auto -7.5rem auto;
+
+                    @media (min-width: 600px) {
+                        padding: 0 2rem;
+                    }
+                    @media (min-width: 960px) {
+                        padding: 0 5rem;
+                    }
+                    @media (min-width: 1280px) {
+                        padding: 0 9.25rem;
+                    }
+                    @media (min-width: 1920px) {
+                        padding: 0 22.125rem;
+                    }
+
+                    .header-main {
+                        height: 5rem;
+                        display: inherit;
+                        width: 100%;
+
+                        header {
+                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-xs, initial);
+                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-xs, initial);
+                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-xs, initial);
+                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-xs, initial);
+                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-xs, initial);
+                            --wct--layout-container--padding: var(--wct--layout-container--padding-xs, initial);
+                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-xs, initial);
+                            --wct--layout-container--width: var(--wct--layout-container--width-xs, inherit);
+
+                            display: -webkit-inline-box;
+                            display: -webkit-inline-flex;
+                            display: -ms-inline-flexbox;
+                            display: inline-flex;
+                            -webkit-box-flex-wrap: wrap;
+                            -webkit-flex-wrap: wrap;
+                            -ms-flex-wrap: wrap;
+                            flex-wrap: wrap;
+                            height: inherit;
+                            -webkit-align-items: var(--wct--layout-container--alignItems, initial);
+                            -webkit-box-align: var(--wct--layout-container--alignItems, initial);
+                            -ms-flex-align: var(--wct--layout-container--alignItems, initial);
+                            align-items: var(--wct--layout-container--alignItems, initial);
+                            -webkit-flex-direction: var(--wct--layout-container--flexDirection, initial);
+                            -ms-flex-direction: var(--wct--layout-container--flexDirection, initial);
+                            flex-direction: var(--wct--layout-container--flexDirection, initial);
+                            -webkit-box-pack: var(--wct--layout-container--justifyContent, initial);
+                            -ms-flex-pack: var(--wct--layout-container--justifyContent, initial);
+                            -webkit-justify-content: var(--wct--layout-container--justifyContent, initial);
+                            justify-content: var(--wct--layout-container--justifyContent, initial);
+                            margin-left: calc(var(--wct--layout-container--columnSpacing, initial) * -1);
+                            margin-top: calc(var(--wct--layout-container--rowSpacing, initial) * -1);
+                            max-width: var(--wct--layout-container--maxWidth, initial);
+                            padding: var(--wct--layout-container--padding, initial);
+                            width: var(--wct--layout-container--width, inherit);
+
+                            @media screen and (min-width: 960px) {
+                                --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-m, initial);
+                                --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-m, initial);
+                                --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-m, initial);
+                                --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-m, initial);
+                                --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-m, initial);
+                                --wct--layout-container--padding: var(--wct--layout-container--padding-m, initial);
+                                --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-m, initial);
+                                --wct--layout-container--width: var(--wct--layout-container--width-m, inherit);
+                            }
+
+                            @media screen and (min-width: 600px) {
+                                --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-s, initial);
+                                --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-s, initial);
+                                --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-s, initial);
+                                --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-s, initial);
+                                --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-s, initial);
+                                --wct--layout-container--padding: var(--wct--layout-container--padding-s, initial);
+                                --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-s, initial);
+                                --wct--layout-container--width: var(--wct--layout-container--width-s, inherit);
+                            }
+
+                            .header-main-left {
+                                --wct--layout-item--alignItems: initial;
+                                --wct--layout-item--alignItems-xs: initial;
+                                --wct--layout-item--alignItems-s: initial;
+                                --wct--layout-item--alignItems-m: initial;
+                                --wct--layout-item--alignItems-l: initial;
+                                --wct--layout-item--alignItems-xl: initial;
+                                --wct--layout-item--alignItems-xxl: initial;
+                                --wct--layout-item--alignItems-xxxl: initial;
+                                --wct--layout-item--flex: initial;
+                                --wct--layout-item--flex-xs: initial;
+                                --wct--layout-item--flex-s: initial;
+                                --wct--layout-item--flex-m: initial;
+                                --wct--layout-item--flex-l: initial;
+                                --wct--layout-item--flex-xl: initial;
+                                --wct--layout-item--flex-xxl: initial;
+                                --wct--layout-item--flex-xxxl: initial;
+                                --wct--layout-item--justifyContent: initial;
+                                --wct--layout-item--justifyContent-xs: initial;
+                                --wct--layout-item--justifyContent-s: initial;
+                                --wct--layout-item--justifyContent-m: initial;
+                                --wct--layout-item--justifyContent-l: initial;
+                                --wct--layout-item--justifyContent-xl: initial;
+                                --wct--layout-item--justifyContent-xxl: initial;
+                                --wct--layout-item--justifyContent-xxxl: initial;
+                                --wct--layout-item--padding: initial;
+                                --wct--layout-item--padding-xs: initial;
+                                --wct--layout-item--padding-s: initial;
+                                --wct--layout-item--padding-m: initial;
+                                --wct--layout-item--padding-l: initial;
+                                --wct--layout-item--padding-xl: initial;
+                                --wct--layout-item--padding-xxl: initial;
+                                --wct--layout-item--padding-xxxl: initial;
+                                --wct--layout-item--width: inherit;
+                                --wct--layout-item--width-xs: inherit;
+                                --wct--layout-item--width-s: inherit;
+                                --wct--layout-item--width-m: inherit;
+                                --wct--layout-item--width-l: inherit;
+                                --wct--layout-item--width-xl: inherit;
+                                --wct--layout-item--width-xxl: inherit;
+                                --wct--layout-item--width-xxxl: inherit;
+
+                                display: -webkit-inline-box;
+                                display: -webkit-inline-flex;
+                                display: -ms-inline-flexbox;
+                                display: inline-flex;
+                                -webkit-box-flex-wrap: wrap;
+                                -webkit-flex-wrap: wrap;
+                                -ms-flex-wrap: wrap;
+                                flex-wrap: wrap;
+                                -webkit-align-items: var(--wct--layout-item--alignItems, initial);
+                                -webkit-box-align: var(--wct--layout-item--alignItems, initial);
+                                -ms-flex-align: var(--wct--layout-item--alignItems, initial);
+                                align-items: var(--wct--layout-item--alignItems, initial);
+                                -webkit-flex: var(--wct--layout-item--flex, initial);
+                                -ms-flex: var(--wct--layout-item--flex, initial);
+                                flex: var(--wct--layout-item--flex, initial);
+                                -webkit-box-pack: var(--wct--layout-item--justifyContent, initial);
+                                -ms-flex-pack: var(--wct--layout-item--justifyContent, initial);
+                                -webkit-justify-content: var(--wct--layout-item--justifyContent, initial);
+                                justify-content: var(--wct--layout-item--justifyContent, initial);
+                                padding: var(--wct--layout-item--padding, initial);
+                                width: var(--wct--layout-item--width, inherit);
+
+                                margin-left: var(--wct--layout-container--columnSpacing, unset);
+                                margin-top: var(--wct--layout-container--rowSpacing, unset);
+                                pointer-events: var(--wct--layout-container--pointer-events, unset);
+                                @media screen and (min-width: 960px) {
+                                    --wct--layout-item--alignItems: var(--wct--layout-item--alignItems-m, initial);
+                                    --wct--layout-item--flex: var(--wct--layout-item--flex-m, initial);
+                                    --wct--layout-item--justifyContent: var(--wct--layout-item--justifyContent-m, initial);
+                                    --wct--layout-item--padding: var(--wct--layout-item--padding-m, initial);
+                                    --wct--layout-item--width: var(--wct--layout-item--width-m, inherit);
+                                }
+                                @media screen and (min-width: 600px) {
+                                    --wct--layout-item--alignItems: var(--wct--layout-item--alignItems-s, initial);
+                                    --wct--layout-item--flex: var(--wct--layout-item--flex-s, initial);
+                                    --wct--layout-item--justifyContent: var(--wct--layout-item--justifyContent-s, initial);
+                                    --wct--layout-item--padding: var(--wct--layout-item--padding-s, initial);
+                                    --wct--layout-item--width: var(--wct--layout-item--width-s, inherit);
+                                }
+
+                                .logo {
+                                    display: block;
+
+                                    img {
+                                        display: block;
+                                        width: 9.25rem;
+                                        height: 2.5rem;
+
+                                        @media screen and (max-width: 959.98px) {
+                                            width: 5.5625rem;
+                                            height: 1.5rem;
+                                        }
+                                    }
+                                }
+                            }
+                            .header-main-right {
+                                --wct--layout-item--alignItems: initial;
+                                --wct--layout-item--alignItems-xs: initial;
+                                --wct--layout-item--alignItems-s: initial;
+                                --wct--layout-item--alignItems-m: initial;
+                                --wct--layout-item--alignItems-l: initial;
+                                --wct--layout-item--alignItems-xl: initial;
+                                --wct--layout-item--alignItems-xxl: initial;
+                                --wct--layout-item--alignItems-xxxl: initial;
+                                --wct--layout-item--flex: initial;
+                                --wct--layout-item--flex-xs: initial;
+                                --wct--layout-item--flex-s: initial;
+                                --wct--layout-item--flex-m: initial;
+                                --wct--layout-item--flex-l: initial;
+                                --wct--layout-item--flex-xl: initial;
+                                --wct--layout-item--flex-xxl: initial;
+                                --wct--layout-item--flex-xxxl: initial;
+                                --wct--layout-item--justifyContent: initial;
+                                --wct--layout-item--justifyContent-xs: initial;
+                                --wct--layout-item--justifyContent-s: initial;
+                                --wct--layout-item--justifyContent-m: initial;
+                                --wct--layout-item--justifyContent-l: initial;
+                                --wct--layout-item--justifyContent-xl: initial;
+                                --wct--layout-item--justifyContent-xxl: initial;
+                                --wct--layout-item--justifyContent-xxxl: initial;
+                                --wct--layout-item--padding: initial;
+                                --wct--layout-item--padding-xs: initial;
+                                --wct--layout-item--padding-s: initial;
+                                --wct--layout-item--padding-m: initial;
+                                --wct--layout-item--padding-l: initial;
+                                --wct--layout-item--padding-xl: initial;
+                                --wct--layout-item--padding-xxl: initial;
+                                --wct--layout-item--padding-xxxl: initial;
+                                --wct--layout-item--width: inherit;
+                                --wct--layout-item--width-xs: inherit;
+                                --wct--layout-item--width-s: inherit;
+                                --wct--layout-item--width-m: inherit;
+                                --wct--layout-item--width-l: inherit;
+                                --wct--layout-item--width-xl: inherit;
+                                --wct--layout-item--width-xxl: inherit;
+                                --wct--layout-item--width-xxxl: inherit;
+
+                                display: -webkit-inline-box;
+                                display: -webkit-inline-flex;
+                                display: -ms-inline-flexbox;
+                                display: inline-flex;
+                                -webkit-box-flex-wrap: wrap;
+                                -webkit-flex-wrap: wrap;
+                                -ms-flex-wrap: wrap;
+                                flex-wrap: wrap;
+                                -webkit-align-items: var(--wct--layout-item--alignItems, initial);
+                                -webkit-box-align: var(--wct--layout-item--alignItems, initial);
+                                -ms-flex-align: var(--wct--layout-item--alignItems, initial);
+                                align-items: var(--wct--layout-item--alignItems, initial);
+                                -webkit-flex: var(--wct--layout-item--flex, initial);
+                                -ms-flex: var(--wct--layout-item--flex, initial);
+                                flex: var(--wct--layout-item--flex, initial);
+                                -webkit-box-pack: var(--wct--layout-item--justifyContent, initial);
+                                -ms-flex-pack: var(--wct--layout-item--justifyContent, initial);
+                                -webkit-justify-content: var(--wct--layout-item--justifyContent, initial);
+                                justify-content: var(--wct--layout-item--justifyContent, initial);
+                                padding: var(--wct--layout-item--padding, initial);
+                                width: var(--wct--layout-item--width, inherit);
+
+                                margin-left: var(--wct--layout-container--columnSpacing, unset);
+                                margin-top: var(--wct--layout-container--rowSpacing, unset);
+                                pointer-events: var(--wct--layout-container--pointer-events, unset);
+
+                                @media screen and (min-width: 960px) {
+                                    --wct--layout-item--alignItems: var(--wct--layout-item--alignItems-m, initial);
+                                    --wct--layout-item--flex: var(--wct--layout-item--flex-m, initial);
+                                    --wct--layout-item--justifyContent: var(--wct--layout-item--justifyContent-m, initial);
+                                    --wct--layout-item--padding: var(--wct--layout-item--padding-m, initial);
+                                    --wct--layout-item--width: var(--wct--layout-item--width-m, inherit);
+                                }
+
+                                @media screen and (min-width: 600px) {
+                                    --wct--layout-item--alignItems: var(--wct--layout-item--alignItems-s, initial);
+                                    --wct--layout-item--flex: var(--wct--layout-item--flex-s, initial);
+                                    --wct--layout-item--justifyContent: var(--wct--layout-item--justifyContent-s, initial);
+                                    --wct--layout-item--padding: var(--wct--layout-item--padding-s, initial);
+                                    --wct--layout-item--width: var(--wct--layout-item--width-s, inherit);
+                                }
+
+                                .right-area {
+                                    width: 100%;
+                                    .button-container {
+                                        --wct--layout-container--alignItems: initial;
+                                        --wct--layout-container--alignItems-xs: initial;
+                                        --wct--layout-container--alignItems-s: initial;
+                                        --wct--layout-container--alignItems-m: initial;
+                                        --wct--layout-container--alignItems-l: initial;
+                                        --wct--layout-container--alignItems-xl: initial;
+                                        --wct--layout-container--alignItems-xxl: initial;
+                                        --wct--layout-container--alignItems-xxxl: initial;
+                                        --wct--layout-container--flexDirection: initial;
+                                        --wct--layout-container--flexDirection-xs: initial;
+                                        --wct--layout-container--flexDirection-s: initial;
+                                        --wct--layout-container--flexDirection-m: initial;
+                                        --wct--layout-container--flexDirection-l: initial;
+                                        --wct--layout-container--flexDirection-xl: initial;
+                                        --wct--layout-container--flexDirection-xxl: initial;
+                                        --wct--layout-container--flexDirection-xxxl: initial;
+                                        --wct--layout-container--justifyContent: initial;
+                                        --wct--layout-container--justifyContent-xs: initial;
+                                        --wct--layout-container--justifyContent-s: initial;
+                                        --wct--layout-container--justifyContent-m: initial;
+                                        --wct--layout-container--justifyContent-l: initial;
+                                        --wct--layout-container--justifyContent-xl: initial;
+                                        --wct--layout-container--justifyContent-xxl: initial;
+                                        --wct--layout-container--justifyContent-xxxl: initial;
+                                        --wct--layout-container--columnSpacing: initial;
+                                        --wct--layout-container--columnSpacing-xs: initial;
+                                        --wct--layout-container--columnSpacing-s: initial;
+                                        --wct--layout-container--columnSpacing-m: initial;
+                                        --wct--layout-container--columnSpacing-l: initial;
+                                        --wct--layout-container--columnSpacing-xl: initial;
+                                        --wct--layout-container--columnSpacing-xxl: initial;
+                                        --wct--layout-container--columnSpacing-xxxl: initial;
+                                        --wct--layout-container--rowSpacing: initial;
+                                        --wct--layout-container--rowSpacing-xs: initial;
+                                        --wct--layout-container--rowSpacing-s: initial;
+                                        --wct--layout-container--rowSpacing-m: initial;
+                                        --wct--layout-container--rowSpacing-l: initial;
+                                        --wct--layout-container--rowSpacing-xl: initial;
+                                        --wct--layout-container--rowSpacing-xxl: initial;
+                                        --wct--layout-container--rowSpacing-xxxl: initial;
+                                        --wct--layout-container--maxWidth: initial;
+                                        --wct--layout-container--maxWidth-xs: initial;
+                                        --wct--layout-container--maxWidth-s: initial;
+                                        --wct--layout-container--maxWidth-m: initial;
+                                        --wct--layout-container--maxWidth-l: initial;
+                                        --wct--layout-container--maxWidth-xl: initial;
+                                        --wct--layout-container--maxWidth-xxl: initial;
+                                        --wct--layout-container--maxWidth-xxxl: initial;
+                                        --wct--layout-container--padding: initial;
+                                        --wct--layout-container--padding-xs: initial;
+                                        --wct--layout-container--padding-s: initial;
+                                        --wct--layout-container--padding-m: initial;
+                                        --wct--layout-container--padding-l: initial;
+                                        --wct--layout-container--padding-xl: initial;
+                                        --wct--layout-container--padding-xxl: initial;
+                                        --wct--layout-container--padding-xxxl: initial;
+                                        --wct--layout-container--width: inherit;
+                                        --wct--layout-container--width-xs: inherit;
+                                        --wct--layout-container--width-s: inherit;
+                                        --wct--layout-container--width-m: inherit;
+                                        --wct--layout-container--width-l: inherit;
+                                        --wct--layout-container--width-xl: inherit;
+                                        --wct--layout-container--width-xxl: inherit;
+                                        --wct--layout-container--width-xxxl: inherit;
+                                        display: -webkit-inline-box;
+                                        display: -webkit-inline-flex;
+                                        display: -ms-inline-flexbox;
+                                        display: inline-flex;
+                                        -webkit-box-flex-wrap: wrap;
+                                        -webkit-flex-wrap: wrap;
+                                        -ms-flex-wrap: wrap;
+                                        flex-wrap: wrap;
+                                        height: inherit;
+                                        -webkit-align-items: var(--wct--layout-container--alignItems, initial);
+                                        -webkit-box-align: var(--wct--layout-container--alignItems, initial);
+                                        -ms-flex-align: var(--wct--layout-container--alignItems, initial);
+                                        align-items: var(--wct--layout-container--alignItems, initial);
+                                        -webkit-flex-direction: var(--wct--layout-container--flexDirection, initial);
+                                        -ms-flex-direction: var(--wct--layout-container--flexDirection, initial);
+                                        flex-direction: var(--wct--layout-container--flexDirection, initial);
+                                        -webkit-box-pack: var(--wct--layout-container--justifyContent, initial);
+                                        -ms-flex-pack: var(--wct--layout-container--justifyContent, initial);
+                                        -webkit-justify-content: var(--wct--layout-container--justifyContent, initial);
+                                        justify-content: var(--wct--layout-container--justifyContent, initial);
+                                        margin-left: calc(var(--wct--layout-container--columnSpacing, initial) * -1);
+                                        margin-top: calc(var(--wct--layout-container--rowSpacing, initial) * -1);
+                                        max-width: var(--wct--layout-container--maxWidth, initial);
+                                        padding: var(--wct--layout-container--padding, initial);
+                                        width: var(--wct--layout-container--width, inherit);
+
+                                        @media screen and (min-width: 2560px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-xxxl, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-xxxl, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-xxxl, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-xxxl, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-xxxl, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-xxxl, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-xxxl, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-xxxl, inherit);
+                                        }
+                                        @media screen and (min-width: 1920px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-xxl, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-xxl, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-xxl, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-xxl, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-xxl, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-xxl, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-xxl, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-xxl, inherit);
+                                        }
+                                        @media screen and (min-width: 1600px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-xl, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-xl, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-xl, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-xl, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-xl, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-xl, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-xl, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-xl, inherit);
+                                        }
+                                        @media screen and (min-width: 1280px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-l, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-l, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-l, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-l, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-l, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-l, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-l, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-l, inherit);
+                                        }
+                                        @media screen and (min-width: 960px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-m, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-m, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-m, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-m, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-m, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-m, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-m, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-m, inherit);
+                                        }
+                                        @media screen and (min-width: 600px) {
+                                            --wct--layout-container--alignItems: var(--wct--layout-container--alignItems-s, initial);
+                                            --wct--layout-container--columnSpacing: var(--wct--layout-container--columnSpacing-s, initial);
+                                            --wct--layout-container--flexDirection: var(--wct--layout-container--flexDirection-s, initial);
+                                            --wct--layout-container--justifyContent: var(--wct--layout-container--justifyContent-s, initial);
+                                            --wct--layout-container--maxWidth: var(--wct--layout-container--maxWidth-s, initial);
+                                            --wct--layout-container--padding: var(--wct--layout-container--padding-s, initial);
+                                            --wct--layout-container--rowSpacing: var(--wct--layout-container--rowSpacing-s, initial);
+                                            --wct--layout-container--width: var(--wct--layout-container--width-s, inherit);
+                                        }
+
+                                        .button-container-right {
+                                            margin-left: 12px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .home-wrap-content {
+                position: relative;
+                width: 100%;
+                max-width: 120rem;
+                z-index: 1;
+
+                -webkit-align-items: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+
+                margin-bottom: 0;
+                margin-left: auto;
+                margin-right: auto;
+
+                .home-wrap-content-inner {
+                    position: relative;
+                    overflow: hidden;
+                    z-index: 3;
+
+                    display: -webkit-box;
+                    display: -webkit-flex;
+                    display: -ms-flexbox;
+                    display: flex;
+
+                    margin: 0 auto;
+                    padding-top: 100px;
+
+                    -webkit-background-size: cover;
+                    background-size: cover;
+
+                    -webkit-background-position: center;
+                    background-position: center;
+
+                    -webkit-align-items: flex-end;
+                    -webkit-box-align: flex-end;
+                    -ms-flex-align: flex-end;
+                    align-items: flex-end;
+
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    -webkit-justify-content: center;
+                    justify-content: center;
+
+                    .content-back {
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        overflow: hidden;
+
+                        .content-back-wrap {
+                            position: absolute;
+                            height: 100%;
+                            width: 100%;
+                            overflow: hidden;
+
+                            img {
+                                position: absolute;
+
+                                height: 100%;
+                                width: auto;
+                                @media (min-width: 960px) {
+                                    height: auto;
+                                    width: 100%;
+                                }
+
+                                @supports (object-fit: cover) {
+                                    height: 100%;
+                                    width: 100%;
+                                    object-fit: cover;
+                                    object-position: center;
+                                }
+                            }
+
+                            > div {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                right: 0;
+                                bottom: 0;
+                                z-index: 2;
+
+                                background-image: linear-gradient(
+                                    360deg,
+                                    rgba(0, 0, 0, 0.9) 0%,
+                                    rgba(0, 0, 0, 0.8965) 8.5%,
+                                    rgba(0, 0, 0, 0.8861) 17%,
+                                    rgba(0, 0, 0, 0.8688) 25.5%,
+                                    rgba(0, 0, 0, 0.8444) 34%,
+                                    rgba(0, 0, 0, 0.8132) 42.5%,
+                                    rgba(0, 0, 0, 0.775) 51%,
+                                    rgba(0, 0, 0, 0.7368) 59.5%,
+                                    rgba(0, 0, 0, 0.7056) 68%,
+                                    rgba(0, 0, 0, 0.6813) 76.5%,
+                                    rgba(0, 0, 0, 0.6639) 85%,
+                                    rgba(0, 0, 0, 0.6535) 93.5%,
+                                    rgba(0, 0, 0, 0.65) 102%
+                                );
+
+                                @media (min-width: 600px) {
+                                    background-image: linear-gradient(
+                                        360deg,
+                                        rgba(0, 0, 0, 0.85) 3%,
+                                        rgba(0, 0, 0, 0.8465) 11.08%,
+                                        rgba(0, 0, 0, 0.8361) 19.17%,
+                                        rgba(0, 0, 0, 0.8187) 27.25%,
+                                        rgba(0, 0, 0, 0.7944) 35.33%,
+                                        rgba(0, 0, 0, 0.7632) 43.42%,
+                                        rgba(0, 0, 0, 0.725) 51.5%,
+                                        rgba(0, 0, 0, 0.6868) 59.58%,
+                                        rgba(0, 0, 0, 0.6556) 67.67%,
+                                        rgba(0, 0, 0, 0.6313) 75.75%,
+                                        rgba(0, 0, 0, 0.6139) 83.83%,
+                                        rgba(0, 0, 0, 0.6035) 91.92%,
+                                        rgba(0, 0, 0, 0.6) 100%
+                                    );
+                                }
+
+                                @media (min-width: 960px) {
+                                    background-image: linear-gradient(
+                                        12deg,
+                                        rgba(0, 0, 0, 0.85) 36%,
+                                        rgba(0, 0, 0, 0.8465) 40.58%,
+                                        rgba(0, 0, 0, 0.8361) 45.17%,
+                                        rgba(0, 0, 0, 0.8187) 49.75%,
+                                        rgba(0, 0, 0, 0.7944) 54.33%,
+                                        rgba(0, 0, 0, 0.7632) 58.92%,
+                                        rgba(0, 0, 0, 0.725) 63.5%,
+                                        rgba(0, 0, 0, 0.6868) 68.08%,
+                                        rgba(0, 0, 0, 0.6556) 72.67%,
+                                        rgba(0, 0, 0, 0.6313) 77.25%,
+                                        rgba(0, 0, 0, 0.6139) 81.83%,
+                                        rgba(0, 0, 0, 0.6035) 86.42%,
+                                        rgba(0, 0, 0, 0.6) 91%
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    .content-main {
+                        display: -webkit-box;
+                        display: -webkit-flex;
+                        display: -ms-flexbox;
+                        display: flex;
+
+                        -webkit-flex-direction: column;
+                        -ms-flex-direction: column;
+                        flex-direction: column;
+
+                        -webkit-flex: 1;
+                        -ms-flex: 1;
+                        flex: 1;
+
+                        z-index: 3;
+
+                        .content-area {
+                            margin: -2rem auto 0 auto;
+
+                            display: -webkit-box;
+                            display: -webkit-flex;
+                            display: -ms-flexbox;
+                            display: flex;
+
+                            -webkit-flex-direction: column;
+                            -ms-flex-direction: column;
+                            flex-direction: column;
+
+                            min-height: 80vh;
+
+                            width: 100%;
+                            max-width: 120rem;
+
+                            -webkit-box-pack: center;
+                            -ms-flex-pack: center;
+                            -webkit-justify-content: center;
+                            justify-content: center;
+
+                            padding: 0 2rem 2rem 2rem;
+
+                            min-height: 31rem;
+
+                            @media (min-width: 960px) {
+                                min-height: 37rem;
+                            }
+                            @media (min-width: 1280px) {
+                                min-height: min(80vh, 45rem);
+                            }
+
+                            .text-container {
+                                display: -webkit-box;
+                                display: -webkit-flex;
+                                display: -ms-flexbox;
+                                display: flex;
+                                -webkit-flex-direction: column;
+                                -ms-flex-direction: column;
+                                flex-direction: column;
+
+                                width: 100%;
+                                position: relative;
+                                align-self: center;
+
+                                margin-left: auto;
+                                margin-right: auto;
+
+                                text-align: center;
+                                -webkit-align-self: center;
+                                -ms-flex-item-align: center;
+                                -ms-grid-row-align: center;
+
+                                max-width: 100%;
+                                @media (min-width: 600px) {
+                                    max-width: 27rem;
+                                }
+                                @media (min-width: 960px) {
+                                    max-width: 31.75rem;
+                                }
+                                @media (min-width: 1280px) {
+                                    max-width: 36.75rem;
+                                }
+                                @media (min-width: 1920px) {
+                                    max-width: 41.5rem;
+                                }
+
+                                h1 {
+                                    margin-bottom: 0.5rem;
+
+                                    font-family: unset;
+                                    font-size: 2.5rem;
+                                    font-weight: 700;
+
+                                    padding: 0;
+                                    color: rgb(255, 255, 255);
+                                    line-height: 125%;
+
+                                    @media (min-width: 600px) {
+                                        font-family: unset;
+                                        font-size: 2rem;
+                                        font-weight: 700;
+                                    }
+
+                                    @media (min-width: 960px) {
+                                        font-family: unset;
+                                        font-size: 2.5rem;
+                                        font-weight: 700;
+                                    }
+
+                                    @media (min-width: 1280px) {
+                                        font-family: unset;
+                                        font-size: 3.5rem;
+                                        font-weight: 900;
+                                    }
+                                    @media (min-width: 1600px) {
+                                        font-family: unset;
+                                        font-size: 3.5rem;
+                                        font-weight: 900;
+                                    }
+                                    @media (min-width: 1920px) {
+                                        font-family: unset;
+                                        font-size: 4rem;
+                                        font-weight: 900;
+                                    }
+                                    @media (min-width: 2560px) {
+                                        font-family: unset;
+                                        font-size: 4rem;
+                                        font-weight: 900;
+                                    }
+                                }
+                                p {
+                                    margin-bottom: 1rem;
+
+                                    margin-block-start: 0;
+                                    margin-block-end: 0;
+                                    margin: 0;
+                                    padding: 0;
+                                    color: rgb(255, 255, 255);
+
+                                    font-family: unset;
+                                    font-size: 1rem;
+                                    font-weight: 400;
+
+                                    @media (min-width: 600px) {
+                                        font-family: unset;
+                                        font-size: 1rem;
+                                        font-weight: 400;
+                                    }
+                                    @media (min-width: 960px) {
+                                        font-family: unset;
+                                        font-size: 1rem;
+                                        font-weight: 400;
+
+                                        margin-bottom: 1.5rem;
+                                    }
+                                    @media (min-width: 1280px) {
+                                        font-family: unset;
+                                        font-size: 1.25rem;
+                                        font-weight: 500;
+
+                                        margin-bottom: 2rem;
+                                    }
+                                    @media (min-width: 1600px) {
+                                        font-family: unset;
+                                        font-size: 1.25rem;
+                                        font-weight: 500;
+
+                                        margin-bottom: 2rem;
+                                    }
+                                    @media (min-width: 1900px) {
+                                        font-family: unset;
+                                        font-size: 1.25rem;
+                                        font-weight: 500;
+
+                                        margin-bottom: 2rem;
+                                    }
+                                    @media (min-width: 2560px) {
+                                        font-family: unset;
+                                        font-size: 1.25rem;
+                                        font-weight: 500;
+
+                                        margin-bottom: 2rem;
+                                    }
+                                }
+
+                                .form-container {
+                                    text-align: center;
+                                    box-sizing: border-box;
+                                    max-width: 61.5rem;
+                                    margin: 0 auto;
+                                    padding: 0 1.5rem;
+
+                                    content: "1";
+                                    max-width: none;
+                                    padding: 0;
+                                    margin: 0;
+
+                                    @media (min-width: 960px) {
+                                        max-width: 40.1875rem;
+                                    }
+
+                                    // @media screen and (min-width: 600px) {
+                                    //     content: "2";
+                                    //     padding: 0 2rem;
+                                    // }
+                                    // @media screen and (min-width: 960px) {
+                                    //     content: "2";
+                                    //     padding: 0 2.625rem;
+                                    // }
+
+                                    form {
+                                        display: -webkit-box;
+                                        display: -webkit-flex;
+                                        display: -ms-flexbox;
+                                        display: flex;
+                                        -webkit-flex-direction: column;
+                                        -ms-flex-direction: column;
+                                        flex-direction: column;
+
+                                        h3 {
+                                            text-align: center;
+                                            color: rgb(255, 255, 255);
+
+                                            font-family: unset;
+                                            font-size: 1rem;
+                                            font-weight: 400;
+                                            line-height: 1.5;
+
+                                            @media (min-width: 600px) {
+                                                text-align: center;
+                                            }
+
+                                            // @media screen and (min-width: 960px) {
+                                            //     font-family: unset;
+                                            //     font-size: 1.25rem;
+                                            //     font-weight: 400;
+                                            //     line-height: 1.5;
+                                            // }
+                                        }
+                                        .form-input-container {
+                                            display: -webkit-box;
+                                            display: -webkit-flex;
+                                            display: -ms-flexbox;
+                                            display: flex;
+
+                                            -webkit-flex-direction: row;
+                                            -ms-flex-direction: row;
+                                            flex-direction: row;
+
+                                            -webkit-align-items: flex-start;
+                                            -webkit-box-align: flex-start;
+                                            -ms-flex-align: flex-start;
+                                            align-items: flex-start;
+
+                                            @media (min-width: 600px) {
+                                                -webkit-align-items: center;
+                                                -webkit-box-align: center;
+                                                -ms-flex-align: center;
+                                                align-items: center;
+                                            }
+                                            padding-top: 16px;
+
+                                            text-align: left;
+                                            position: relative;
+                                            width: 100%;
+                                            // max-width: 36.625rem;
+
+                                            .input-wrap {
+                                                width: 100%;
+                                                -webkit-flex: 1 1 auto;
+                                                -ms-flex: 1 1 auto;
+                                                flex: 1 1 auto;
+
+                                                display: inline-flex;
+                                                vertical-align: text-top;
+                                                position: relative;
+                                                flex-wrap: wrap;
+
+                                                .input-control {
+                                                    position: relative;
+                                                    width: 100%;
+                                                }
+
+                                                .input-control input {
+                                                    position: relative;
+                                                    z-index: 1;
+
+                                                    width: 100%;
+                                                    min-width: 15rem;
+                                                    padding: 1.25rem 1rem 0.5rem;
+                                                    border-radius: 0.25rem;
+                                                    border: 0.0625rem solid rgba(255, 255, 255, 0.35);
+                                                    background: rgba(22, 22, 22, 0.7);
+                                                    color: #fff;
+                                                    font-size: 1rem;
+                                                    line-height: 1.5;
+                                                    outline: none;
+
+                                                    &:focus {
+                                                        border-color: rgba(255, 255, 255, 0.85);
+                                                    }
+                                                }
+
+                                                // Floating label (placeholder 역할)
+                                                // - focus or 값이 있으면 위로 올라감
+                                                .input-control label {
+                                                    position: absolute;
+                                                    z-index: 2;
+
+                                                    color: rgba(255, 255, 255, 0.7);
+                                                    font-family: unset;
+                                                    font-size: 1rem;
+                                                    font-weight: 400;
+                                                    left: 1rem;
+                                                    line-height: 1.5;
+                                                    right: 1rem;
+                                                    top: 1rem;
+
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                    transition-property: top, font-size, line-height;
+                                                    transition-duration: 250ms;
+                                                    pointer-events: none;
+                                                    transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
+                                                }
+
+                                                .input-control:focus-within label {
+                                                    top: 0.5rem;
+                                                    font-size: 0.75rem;
+                                                    line-height: 1rem;
+                                                    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                                                }
+
+                                                .input-control input:not(:placeholder-shown) + label {
+                                                    top: 0.5rem;
+                                                    font-size: 0.75rem;
+                                                    line-height: 1rem;
+                                                    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+                                                }
+
+                                                // Netflix 스타일처럼 input과 같은 크기로 커지는 에러 테두리 레이어
+                                                .input-control .input-help {
+                                                    position: absolute;
+                                                    inset: 0;
+                                                    z-index: 0;
+
+                                                    background: rgba(22, 22, 22, 0.7);
+                                                    border-radius: 0.25rem;
+                                                    border: 0.0625rem solid rgb(235, 57, 66);
+                                                    opacity: 0;
+                                                    pointer-events: none;
+                                                }
+
+                                                .input-control[data-invalid="true"] .input-help {
+                                                    opacity: 1;
+                                                }
+
+                                                .input-control[data-invalid="true"] input {
+                                                    border-color: rgb(235, 57, 66);
+                                                }
+                                            }
+
+                                            button {
+                                                -webkit-flex: 0 0 auto;
+                                                -ms-flex: 0 0 auto;
+                                                flex: 0 0 auto;
+                                                margin-top: 0;
+                                                margin-left: 0.5rem;
+
+                                                font-size: 1.125rem;
+
+                                                appearance: none;
+                                                font-style: inherit;
+                                                font-variant: inherit;
+                                                font-stretch: inherit;
+                                                font-optical-sizing: inherit;
+                                                font-size-adjust: inherit;
+                                                font-kerning: inherit;
+                                                font-feature-settings: inherit;
+                                                font-variation-settings: inherit;
+                                                font-language-override: inherit;
+
+                                                opacity: 1;
+                                                text-decoration: none;
+                                                -webkit-box-align: center;
+                                                align-items: center;
+                                                box-sizing: border-box;
+                                                display: inline-flex;
+                                                -webkit-box-pack: center;
+                                                justify-content: center;
+                                                letter-spacing: normal;
+                                                line-height: 1;
+                                                user-select: none;
+                                                border: 0px;
+                                                cursor: pointer;
+                                                fill: currentcolor;
+                                                position: relative;
+                                                transition-duration: 250ms;
+                                                transition-property: background-color, border-color;
+                                                transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
+                                                vertical-align: text-top;
+                                                width: auto;
+                                                font-family: unset;
+                                                // font-size: 1.5rem;
+                                                font-weight: 500;
+                                                min-height: 3.5rem;
+                                                padding: 0.75rem 1.5rem;
+                                                border-radius: 0.25rem;
+                                                --wct--focus-ring--default-color: #a9a9a9;
+                                                background: rgb(229, 9, 20);
+                                                color: rgb(255, 255, 255);
+
+                                                text-transform: none;
+                                                gap: 0.5rem;
+
+                                                > span {
+                                                    display: inline-flex;
+                                                    align-items: center;
+                                                    line-height: 1;
+                                                }
+
+                                                .btn-arrow {
+                                                    display: inline-flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 1.3rem;
+                                                    line-height: 1;
+                                                    color: inherit;
+                                                    transform: translateY(0px);
+
+                                                    svg {
+                                                        width: 1.1em;
+                                                        height: 1.1em;
+                                                        stroke: currentColor;
+                                                        stroke-width: 2;
+                                                        fill: none;
+                                                        stroke-linecap: round;
+                                                        stroke-linejoin: round;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .content-footer {
+                            box-sizing: border-box;
+                            overflow-x: hidden;
+                            position: relative;
+                            height: 6.25rem;
+                            z-index: 1;
+                            .curve-container {
+                                .curve-1 {
+                                    box-sizing: border-box;
+                                    position: absolute;
+                                    height: 100%;
+                                    top: 0;
+                                    margin: auto;
+
+                                    display: -webkit-box;
+                                    display: -webkit-flex;
+                                    display: -ms-flexbox;
+                                    display: flex;
+                                    -webkit-align-items: center;
+                                    -webkit-box-align: center;
+                                    -ms-flex-align: center;
+                                    align-items: center;
+
+                                    border: solid 0.25rem transparent;
+                                    border-top-left-radius: 50% 100%;
+                                    border-top-right-radius: 50% 100%;
+                                    border-bottom: none;
+
+                                    background: radial-gradient(50% 500% at 50% -420%, rgba(64, 97, 231, 0.4) 80%, rgba(0, 0, 0, 0.1) 100%), black;
+                                    -webkit-background-clip: padding-box;
+                                    background-clip: padding-box;
+
+                                    width: 200%;
+                                    left: -50%;
+                                    @media (min-width: 600px) {
+                                        width: 180%;
+                                        left: -40%;
+                                    }
+                                    @media (min-width: 960px) {
+                                        width: 150%;
+                                        left: -25%;
+                                    }
+                                }
+                                .curve-1:before {
+                                    content: "";
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    left: 0;
+                                    z-index: -1;
+                                    margin-top: -0.25rem;
+                                    border-radius: inherit;
+                                    background: linear-gradient(to right, rgba(33, 13, 22, 1) 16%, rgba(184, 40, 105, 1), rgba(229, 9, 20, 1), rgba(184, 40, 105, 1), rgba(33, 13, 22, 1) 84%);
+                                }
+                                .curve-2 {
+                                    position: relative;
+                                    z-index: 2;
+                                    text-align: center;
+
+                                    margin-top: 1.375em;
+                                    @media (min-width: 600px) {
+                                        margin-top: 1.875rem;
+                                    }
+                                    @media (min-width: 960px) {
+                                        margin-top: 1.25rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
