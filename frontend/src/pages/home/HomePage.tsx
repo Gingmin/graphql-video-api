@@ -1,16 +1,34 @@
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import backImg from "@/assets/images/back.jpg";
 // import netflixLogo from "@/assets/logo/Netflix_Logo_PMS.png";
 import netflixLogo from "@/assets/logo/logo.svg";
 import { LanguageDropdown, UiAnchorButton } from "@/ui";
+import { useTranslation } from "react-i18next";
+import { LanguageUtil } from "@/utils/language-util";
 
 function HomePage() {
+    const { t, i18n } = useTranslation();
     const emailId = useId();
     const [email, setEmail] = useState("");
     const [emailTouched, setEmailTouched] = useState(false);
     const [lang, setLang] = useState<"ko" | "en">("ko");
 
     const emailInvalid = emailTouched && email.trim().length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+    const currentI18nLang = String(i18n?.resolvedLanguage ?? i18n?.language ?? "");
+
+    useEffect(() => {
+        if (currentI18nLang.includes("ko")) {
+            setLang("ko");
+        } else {
+            setLang("en");
+        }
+    }, [currentI18nLang]);
+
+    useEffect(() => {
+        console.log(lang);
+        LanguageUtil.changeLanguage(lang);
+    }, [lang]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

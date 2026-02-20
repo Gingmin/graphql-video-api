@@ -8,6 +8,8 @@ import { RouterProvider } from "react-router-dom";
 import { store } from "@/app/store";
 import router from "@/pages/page-config";
 
+import "@/i18n";
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
