@@ -3,6 +3,8 @@ CREATE TABLE users
 (
     id bigserial primary key,
     email varchar(255) not null unique,
+    name varchar(100) not null,
+    password varchar(255) not null,
     latest_login_ip varchar(45),
     last_login_date timestamptz,
     jti uuid,
@@ -12,6 +14,8 @@ CREATE TABLE users
 );
 COMMENT ON COLUMN users.id IS 'id';
 COMMENT ON COLUMN users.email IS '이메일';
+COMMENT ON COLUMN users.name IS '이름';
+COMMENT ON COLUMN users.password IS '비밀번호';
 COMMENT ON COLUMN users.latest_login_ip IS '최근 로그인 IP';
 COMMENT ON COLUMN users.last_login_date IS '마지막 로그인 일시';
 COMMENT ON COLUMN users.jti IS 'jti';

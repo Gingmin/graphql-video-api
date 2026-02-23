@@ -1,8 +1,11 @@
 spring:
-  application:
-    name: gingflix
+    application:
+        name: gingflix
 
-  graphql:
-    graphiql:
-      enabled: true
-
+    graphql:
+        graphiql:
+            enabled: true
+jwt:
+    secret: "Z2luZ2ZsaXgtand0LXNlY3JldC1rZXk="
+    expiration-ms: 36000000 # Access  token 만료: 10시간
+    refresh-expiration-ms: 604800000 # Refresh token 만료: 7일

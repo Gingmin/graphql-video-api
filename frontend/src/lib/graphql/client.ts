@@ -13,12 +13,6 @@ function buildHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
     };
-
-    const token = localStorage.getItem("token");
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
-
     return headers;
 }
 
@@ -31,8 +25,8 @@ export function createGqlClient() {
     const endpoint = new URL("/graphql", getOrigin()).toString();
     return new GraphQLClient(endpoint, {
         headers: () => buildHeaders(),
+        credentials: "include",
     });
 }
 
 export const gqlClient = createGqlClient();
-
