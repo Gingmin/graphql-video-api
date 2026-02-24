@@ -1,0 +1,21 @@
+extend type Query {
+    me: User
+}
+
+extend type Mutation {
+    signUp(name: String!, email: String!, password: String!): User!
+
+    login(email: String!, password: String!): User!
+
+    logout: Boolean!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    latestLoginIp: String
+    lastLoginDate: String
+    createdAt: String
+    modifiedAt: String
+}

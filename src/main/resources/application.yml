@@ -3,18 +3,18 @@ spring:
         name: gingflix
 
     datasource:
-    url: jdbc:postgresql://localhost:5434/clean
-    username: peuser
-    password: rhtmxm
+        url: jdbc:postgresql://localhost:5434/clean
+        username: peuser
+        password: rhtmxm
 
     jpa:
         hibernate:
-        ddl-auto: validate
+            ddl-auto: validate
         show-sql: false
         properties:
-        hibernate:
-            format_sql: true
-            highlight_sql: true
+            hibernate:
+                format_sql: true
+                highlight_sql: true
 
     graphql:
         graphiql:
@@ -32,3 +32,14 @@ jwt:
     secret: "Z2luZ2ZsaXgtand0LXNlY3JldC1rZXk="
     expiration-ms: 36000000 # Access  token 만료: 10시간
     refresh-expiration-ms: 604800000 # Refresh token 만료: 7일
+
+app:
+    cors:
+        allowed-origins:
+            - "http://localhost:5173"
+            - "http://127.0.0.1:5173"
+        allowed-methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+        allowed-headers: ["Authorization", "Content-Type", "X-CSRF-Token"]
+        exposed-headers: ["Set-Cookie"]
+        allow-credentials: true
+        max-age: 3600

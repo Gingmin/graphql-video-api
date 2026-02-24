@@ -1,5 +1,6 @@
 package com.example.user.application;
 
+import com.example.auth.JwtService;
 import com.example.user.domain.User;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public record AuthResult(User user, String accessToken) {}
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Transactional
@@ -37,31 +42,41 @@ public class UserService {
         var passwordHash = passwordEncoder.encode(password);
         var user = userRepository.create(name, email, passwordHash);
 
-        String jti = UUID.randomUUID().toString();
-        Map claims = new Map();
-        claims.put("sub", user.id());
-        claims.put("jti", jti);
-        claims.put("email", email);
-
-        var token = jwtService.generateToken(user.id(), claims);
-        return new AuthResult(user, token);
-        // return userRepository.create(name, email, passwordHash);
-    }
-
-    @Transactional(readOnly = true)
-    public User login(String email, String password) {
-        var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("invalid email or password"));
-
-        // 비밀번호 검증은 DB에 저장된 해시가 필요하므로,
-        // 여기서는 domain User에 password가 없으므로 infra 레벨에서 검증이 필요합니다.
-        // 현재 구조에서는 adapter에서 password 검증 후 User를 반환하는 방식을 권장합니다.
         return user;
     }
 
     @Transactional(readOnly = true)
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("user not found"));
+    public AuthResult login(String email, String password) {
+
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("email must not be blank");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("password must not be blank");
+        }
+
+        var auth = userRepository.findAuthByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("invalid credentials"));
+        
+        if (!passwordEncoder.matches(password, auth.password())) {
+            throw new IllegalArgumentException("invalid credentials");
+        }
+
+        String jti = UUID.randomUUID().toString();
+        User user = auth.user();
+        String id = String.valueOf(user.id());
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", id);
+        claims.put("jti", jti);
+        claims.put("email", email);
+        
+        var token = jwtService.generateToken(id, claims);
+        return new AuthResult(user, token);
+    }
+
+    @Transactional(readOnly = true)
+    public User getById(String id) {
+        return userRepository.findById(Long.parseLong(id)).orElseThrow(() -> new IllegalArgumentException("user not found"));
     }
 }
