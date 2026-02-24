@@ -9,6 +9,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -33,7 +34,7 @@ public class UserJpaEntity {
     private Instant lastLoginDate;
 
     @Column(name = "jti")
-    private String jti;
+    private UUID jti;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -52,7 +53,7 @@ public class UserJpaEntity {
     , String password
     , String latestLoginIp
     , Instant lastLoginDate
-    , String jti
+    , UUID jti
     ) {
         this.name = name;
         this.email = email;
@@ -107,7 +108,7 @@ public class UserJpaEntity {
         return lastLoginDate;
     }
 
-    public String getJti() {
+    public UUID getJti() {
         return jti;
     }
 

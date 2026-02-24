@@ -55,6 +55,24 @@ tasks.named<Test>("test") {
     }
 }
 
+tasks.test {
+    useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    testLogging {
+        // 테스트 통과, 스킵, 실패 시 로그 출력
+        events("passed", "skipped", "failed")
+        
+        // 상세한 에러 메시지 출력
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        
+        // (선택) System.out.println 로그도 보고 싶다면 주석 해제
+        // showStandardStreams = true
+    }
+}
+
 val integrationTest by tasks.registering(Test::class) {
     group = "verification"
     description = "Runs integration tests (tag: integration)."

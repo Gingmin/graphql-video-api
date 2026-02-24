@@ -29,7 +29,7 @@ logging:
         org.springframework.transaction: info
 
 jwt:
-    secret: "Z2luZ2ZsaXgtand0LXNlY3JldC1rZXk="
+    secret: "ioUK3eJ4g40BOEqS9wdiKc2OwgLz3Uzm+EXO+L50YnE="
     expiration-ms: 36000000 # Access  token 만료: 10시간
     refresh-expiration-ms: 604800000 # Refresh token 만료: 7일
 
