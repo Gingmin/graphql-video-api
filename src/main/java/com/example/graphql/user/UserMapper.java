@@ -14,7 +14,7 @@ final class UserMapper {
             String.valueOf(user.id()),
             user.name(),
             user.email(),
-            user.lastLoginIp(),
+            user.latestLoginIp(),
             user.lastLoginDate() == null ? null : ISO_INSTANT.format(user.lastLoginDate()),
             user.createdAt() == null ? null : ISO_INSTANT.format(user.createdAt()),
             user.modifiedAt() == null ? null : ISO_INSTANT.format(user.modifiedAt())

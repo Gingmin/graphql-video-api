@@ -15,11 +15,9 @@ const ME = gql`
 const LOGIN = gql`
     mutation Login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
-            user {
-                id
-                email
-                name
-            }
+            id
+            email
+            name
         }
     }
 `;

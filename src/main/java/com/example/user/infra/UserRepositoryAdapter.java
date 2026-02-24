@@ -27,13 +27,22 @@ public class UserRepositoryAdapter implements UserRepository {
         return toDomain(saved);
     }
 
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return jpaRepository.findByEmail(email).map(UserRepositoryAdapter::toDomain);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return jpaRepository.findById(id).map(UserRepositoryAdapter::toDomain);
+    }
+
     private static User toDomain(UserJpaEntity e) {
         return new User(
             e.getId(),
             e.getName(),
             e.getEmail(),
-            e.getPasswordHash(),
-            e.getLastLoginIp(),
+            e.getLatestLoginIp(),
             e.getLastLoginDate(),
             e.getCreatedAt(),
             e.getModifiedAt()

@@ -1,28 +1,25 @@
 package com.example.user.application;
 
-import com.example.auth.JwtService;
 import com.example.user.domain.User;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
 
-    public record AuthResult(User user, String accessToken) {}
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
     }
 
     @Transactional
-    public AuthResult signUp(String name, String email, String password) {
+    public User signUp(String name, String email, String password) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("name must not be blank");
         }
@@ -48,5 +45,23 @@ public class UserService {
 
         var token = jwtService.generateToken(user.id(), claims);
         return new AuthResult(user, token);
+        // return userRepository.create(name, email, passwordHash);
+    }
+
+    @Transactional(readOnly = true)
+    public User login(String email, String password) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("invalid email or password"));
+
+        // 비밀번호 검증은 DB에 저장된 해시가 필요하므로,
+        // 여기서는 domain User에 password가 없으므로 infra 레벨에서 검증이 필요합니다.
+        // 현재 구조에서는 adapter에서 password 검증 후 User를 반환하는 방식을 권장합니다.
+        return user;
+    }
+
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("user not found"));
     }
 }

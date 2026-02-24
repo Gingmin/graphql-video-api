@@ -2,9 +2,32 @@ spring:
     application:
         name: gingflix
 
+    datasource:
+    url: jdbc:postgresql://localhost:5434/clean
+    username: peuser
+    password: rhtmxm
+
+    jpa:
+        hibernate:
+        ddl-auto: validate
+        show-sql: false
+        properties:
+        hibernate:
+            format_sql: true
+            highlight_sql: true
+
     graphql:
         graphiql:
             enabled: true
+logging:
+    level:
+        # SQL 출력(hibernate)
+        org.hibernate.SQL: debug
+        # 바인딩 파라미터까지 보고 싶으면 trace로
+        org.hibernate.orm.jdbc.bind: trace
+        # (선택) 트랜잭션 로그
+        org.springframework.transaction: info
+
 jwt:
     secret: "Z2luZ2ZsaXgtand0LXNlY3JldC1rZXk="
     expiration-ms: 36000000 # Access  token 만료: 10시간
