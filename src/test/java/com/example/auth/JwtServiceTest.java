@@ -2,10 +2,9 @@ package com.example.auth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.user.domain.User;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
-
-import com.example.user.domain.User;
 
 class JwtServiceTest {
     @Test
@@ -22,3 +21,4 @@ class JwtServiceTest {
         assertThat(jwtService.isValid(token, String.valueOf(user.id()))).isTrue();
     }
 }
+

@@ -37,7 +37,7 @@ export const useMe = () => {
     });
 };
 
-export const useLogin = () => {
+export const useLogin = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (vars: { email: string; password: string }) => {
@@ -45,11 +45,12 @@ export const useLogin = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["me"] });
+            thenFn?.();
         },
     });
 };
 
-export const useLogout = () => {
+export const useLogout = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: () => {
@@ -57,6 +58,7 @@ export const useLogout = () => {
         },
         onSuccess: () => {
             queryClient.setQueryData(["me"], null);
+            thenFn?.();
         },
     });
 };

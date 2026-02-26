@@ -1,10 +1,12 @@
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children, permissions }: { children: React.ReactNode; permissions: string[] }) => {
-    const isAuthenticated = localStorage.getItem("token"); // 또는 인증 상태 확인
+import { useAppSelector } from "@/app/hooks";
 
-    if (!isAuthenticated) {
-        // return <Navigate to="/login" replace />;
+const ProtectedRoute = ({ children, permissions }: { children: React.ReactNode; permissions: string[] }) => {
+    const userId = useAppSelector((state) => state.userSlice.id);
+
+    if (!userId) {
+        return <Navigate to="/login" replace />;
     }
 
     return children;

@@ -1,8 +1,7 @@
 package com.example.graphql.user;
 
+import graphql.schema.DataFetchingEnvironment;
 import com.example.user.application.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
 import org.springframework.http.ResponseCookie;
@@ -32,7 +31,7 @@ public class UserMutationController {
     public UserGql login(
         @Argument("email") String email,
         @Argument("password") String password,
-        HttpServletResponse response
+        DataFetchingEnvironment env
     ) {
         var result = userService.login(email, password);
 
@@ -43,13 +42,12 @@ public class UserMutationController {
                 .maxAge(Duration.ofDays(7))
                 .sameSite("Lax")
                 .build();
-        response.addHeader("Set-Cookie", cookie.toString());
-
+        env.getGraphQlContext().put(SetCookieWebGraphQlInterceptor.SET_COOKIE_CTX_KEY, cookie.toString());
         return UserMapper.toGql(result.user());
     }
 
     @MutationMapping
-    public boolean logout(HttpServletRequest request, HttpServletResponse response) {
+    public boolean logout(DataFetchingEnvironment env) {
         ResponseCookie cookie = ResponseCookie.from("token", "")
                 .httpOnly(true)
                 .secure(false)
@@ -57,7 +55,7 @@ public class UserMutationController {
                 .maxAge(Duration.ZERO)
                 .sameSite("Lax")
                 .build();
-        response.addHeader("Set-Cookie", cookie.toString());
+        env.getGraphQlContext().put(SetCookieWebGraphQlInterceptor.SET_COOKIE_CTX_KEY, cookie.toString());
         return true;
     }
 }

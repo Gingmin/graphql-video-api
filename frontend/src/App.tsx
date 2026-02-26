@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 
 import "@/styles/app.scss";
+import "@/styles/page.scss";
 
 import { useAppDispatch } from "@/app/hooks";
-import { setUser } from "@/features/user-slice";
+import { initialState, setUser } from "@/features/user-slice";
 
 import { useMe } from "@/hooks/useAuth";
 
-import HomePage from "@/pages/home/HomePage";
+import { Outlet } from "react-router-dom";
 
 export default function App() {
     const dispatch = useAppDispatch();
@@ -17,21 +18,13 @@ export default function App() {
     useEffect(() => {
         if (user) {
             dispatch(setUser({ id: user.id, email: user.email, name: user.name }));
+        } else {
+            dispatch(setUser(initialState));
         }
     }, [user, dispatch]);
 
     if (isLoading) {
         return <div>loading...</div>;
     }
-
-    if (!user) {
-        return <HomePage />;
-    }
-
-    return (
-        <div>
-            <h1>Hello World</h1>
-            {/* <Link to="/users">Users</Link> */}
-        </div>
-    );
+    return <Outlet />;
 }

@@ -5,6 +5,8 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.example.user.application.UserService;
 
 @Controller
@@ -16,7 +18,8 @@ public class UserQueryController {
     }
 
     @QueryMapping
-    public UserGql me(Authentication authentication) {
+    public UserGql me() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
@@ -26,8 +29,7 @@ public class UserQueryController {
             return UserMapper.toGql(user);
         }
 
-        // principal이 subject(String)로 들어온 경우를 대비
-        if (principal instanceof String subject && subject != null && !subject.isBlank()) {
+        if (principal instanceof String subject && !"anonymousUser".equals(subject) && !subject.isBlank()) {
             User user = userService.getById(subject);
             return UserMapper.toGql(user);
         }
