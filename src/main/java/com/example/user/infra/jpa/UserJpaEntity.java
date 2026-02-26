@@ -100,12 +100,24 @@ public class UserJpaEntity {
         return password;
     }
 
+    public void setLatestLoginIp(String latestLoginIp) {
+        this.latestLoginIp = latestLoginIp;
+    }
+
     public String getLatestLoginIp() {
         return latestLoginIp;
     }
 
+    public void setLastLoginDate(Instant lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
     public Instant getLastLoginDate() {
         return lastLoginDate;
+    }
+
+    public void setJti(UUID jti) {
+        this.jti = jti;
     }
 
     public UUID getJti() {

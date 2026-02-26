@@ -33,7 +33,8 @@ public class UserMutationController {
         @Argument("password") String password,
         DataFetchingEnvironment env
     ) {
-        var result = userService.login(email, password);
+        String clientIp = env.getGraphQlContext().get(SetCookieWebGraphQlInterceptor.REMOTE_IP_CTX_KEY);
+        var result = userService.login(email, password, clientIp);
 
         ResponseCookie cookie = ResponseCookie.from("token", result.accessToken())
                 .httpOnly(true)

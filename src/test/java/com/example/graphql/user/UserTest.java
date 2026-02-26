@@ -64,7 +64,7 @@ public class UserTest {
 
     @Test
     void login() {
-        given(userService.login("mk@example.com", "1234"))
+        given(userService.login("mk@example.com", "1234", null))
             .willReturn(
                 new UserService.AuthResult(
                     new User(1L, "mk", "mk@example.com", null, Instant.EPOCH, Instant.EPOCH, Instant.EPOCH), "token-1"

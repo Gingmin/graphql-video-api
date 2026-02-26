@@ -36,7 +36,7 @@ function LoginPage() {
         loginMutation.mutate({ email: _email, password: _password });
     };
     return (
-        <div>
+        <div className="common-page">
             <h1>Login Page</h1>
             <form onSubmit={handleSubmit}>
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />

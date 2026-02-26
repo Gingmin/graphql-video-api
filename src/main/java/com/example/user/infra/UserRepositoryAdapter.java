@@ -7,6 +7,8 @@ import com.example.user.infra.jpa.UserJpaRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
+import java.time.Instant;
 
 @Repository
 public class UserRepositoryAdapter implements UserRepository {
@@ -25,6 +27,16 @@ public class UserRepositoryAdapter implements UserRepository {
     public User create(String name, String email, String passwordHash) {
         var saved = jpaRepository.save(new UserJpaEntity(name, email, passwordHash));
         return toDomain(saved);
+    }
+
+    @Override
+    public void login(long id, String jti, String clientIp) {
+        var entity = jpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found"));
+
+        entity.setJti(UUID.fromString(jti));
+        entity.setLatestLoginIp(clientIp);
+        entity.setLastLoginDate(Instant.now());
+        jpaRepository.save(entity);
     }
 
     @Override

@@ -45,8 +45,8 @@ public class UserService {
         return user;
     }
 
-    @Transactional(readOnly = true)
-    public AuthResult login(String email, String password) {
+    @Transactional
+    public AuthResult login(String email, String password, String clientIp) {
 
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("email must not be blank");
@@ -72,6 +72,9 @@ public class UserService {
         claims.put("email", email);
         
         var token = jwtService.generateToken(id, claims);
+
+        userRepository.login(user.id(), jti, clientIp);
+
         return new AuthResult(user, token);
     }
 

@@ -77,7 +77,7 @@ export default function SignUpPage() {
     };
 
     return (
-        <div>
+        <div className="common-page">
             <h1>Sign Up Page</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
