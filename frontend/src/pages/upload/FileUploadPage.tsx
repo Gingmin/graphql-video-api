@@ -202,7 +202,7 @@ function FileUploadPage() {
     const sendXHR = async (item: FileItem, formData: FormData) => {
         await new Promise<void>((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", `${API_BASE}/upload`);
+            xhr.open("POST", `${API_BASE}/api/upload`);
 
             xhr.upload.onprogress = (e) => {
                 xhrOnProgress(e, item);
