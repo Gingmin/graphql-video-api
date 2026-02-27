@@ -20,6 +20,7 @@ function UsersPage() {
         <div className="common-page">
             <h1>Users Page</h1>
             <button onClick={handleLogout}>Logout</button>
+            <button onClick={() => navigate("/upload")}>Upload</button>
         </div>
     );
 }

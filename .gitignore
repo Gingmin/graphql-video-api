@@ -9,6 +9,7 @@
 .settings/
 *.iml
 /target
+/uploads
 
 /resources/static/
 

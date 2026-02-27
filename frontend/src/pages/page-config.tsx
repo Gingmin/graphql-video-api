@@ -1,17 +1,20 @@
 import LoginPage from "./login/LoginPage";
 import { createBrowserRouter } from "react-router-dom";
 import React from "react";
-import ProtectedRoute from "./ProtectedRoute";
-import UsersPage from "./UsersPage";
-import App from "../App";
+
+import App from "@/App";
+import ProtectedRoute from "@/pages/ProtectedRoute";
+import PublicOnlyRoute from "@/pages/PublicOnlyRoute";
+
+import HomePage from "@/pages/home/HomePage";
 import SignUpPage from "@/pages/login/SignUpPage";
-import HomePage from "./home/HomePage";
-import PublicOnlyRoute from "./PublicOnlyRoute";
+
+import UsersPage from "@/pages/UsersPage";
+import FileUploadPage from "@/pages/upload/FileUploadPage";
 
 export interface PageConfig {
     path: string;
     component: React.ComponentType;
-    layout?: "auth" | "admin" | "default";
     meta?: {
         title?: string;
         requiresAuth?: boolean;
@@ -23,19 +26,16 @@ export const publicPages: PageConfig[] = [
     {
         path: "/",
         component: HomePage,
-        layout: "default",
         meta: { title: "Home" },
     },
     {
         path: "/login",
         component: LoginPage,
-        layout: "auth",
         meta: { title: "Login" },
     },
     {
         path: "/signup",
         component: SignUpPage,
-        layout: "auth",
         meta: { title: "Sign Up" },
     },
 ];
@@ -44,9 +44,17 @@ export const pages: PageConfig[] = [
     {
         path: "/users",
         component: UsersPage,
-        layout: "admin",
         meta: {
             title: "사용자 관리",
+            requiresAuth: true,
+            permissions: ["admin"],
+        },
+    },
+    {
+        path: "/upload",
+        component: FileUploadPage,
+        meta: {
+            title: "파일 업로드",
             requiresAuth: true,
             permissions: ["admin"],
         },
