@@ -143,6 +143,252 @@ body {
         sans-serif;
 }
 
+form {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+    }
+    h2 {
+        font-size: 1.125rem;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    h3 {
+        text-align: center;
+        color: rgb(255, 255, 255);
+
+        font-family: unset;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+
+        @media (min-width: 600px) {
+            text-align: center;
+        }
+
+        // @media screen and (min-width: 960px) {
+        //     font-family: unset;
+        //     font-size: 1.25rem;
+        //     font-weight: 400;
+        //     line-height: 1.5;
+        // }
+    }
+    .form-input-container {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+
+        -webkit-align-items: flex-start;
+        -webkit-box-align: flex-start;
+        -ms-flex-align: flex-start;
+        align-items: flex-start;
+
+        @media (min-width: 600px) {
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+        padding-top: 16px;
+
+        text-align: left;
+        position: relative;
+        width: 100%;
+        // max-width: 36.625rem;
+
+        .input-wrap {
+            width: 100%;
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+
+            display: inline-flex;
+            vertical-align: text-top;
+            position: relative;
+            flex-wrap: wrap;
+
+            .input-control {
+                position: relative;
+                width: 100%;
+            }
+
+            .input-control input {
+                position: relative;
+                z-index: 1;
+
+                width: 100%;
+                min-width: 15rem;
+                padding: 1.25rem 1rem 0.5rem;
+                border-radius: 0.25rem;
+                border: 0.0625rem solid rgba(255, 255, 255, 0.35);
+                background: rgba(22, 22, 22, 0.7);
+                color: #fff;
+                font-size: 1rem;
+                line-height: 1.5;
+                outline: none;
+
+                &:focus {
+                    border-color: rgba(255, 255, 255, 0.85);
+                }
+            }
+
+            // Floating label (placeholder 역할)
+            // - focus or 값이 있으면 위로 올라감
+            .input-control label {
+                position: absolute;
+                z-index: 2;
+
+                color: rgba(255, 255, 255, 0.7);
+                font-family: unset;
+                font-size: 1rem;
+                font-weight: 400;
+                left: 1rem;
+                line-height: 1.5;
+                right: 1rem;
+                top: 1rem;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition-property: top, font-size, line-height;
+                transition-duration: 250ms;
+                pointer-events: none;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
+            }
+
+            .input-control:focus-within label {
+                top: 0.5rem;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            .input-control input:not(:placeholder-shown) + label {
+                top: 0.5rem;
+                font-size: 0.75rem;
+                line-height: 1rem;
+                transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            // Netflix 스타일처럼 input과 같은 크기로 커지는 에러 테두리 레이어
+            .input-control .input-help {
+                position: absolute;
+                inset: 0;
+                z-index: 0;
+
+                background: rgba(22, 22, 22, 0.7);
+                border-radius: 0.25rem;
+                border: 0.0625rem solid rgb(235, 57, 66);
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .input-control[data-invalid="true"] .input-help {
+                opacity: 1;
+            }
+
+            .input-control[data-invalid="true"] input {
+                border-color: rgb(235, 57, 66);
+            }
+        }
+
+        button {
+            -webkit-flex: 0 0 auto;
+            -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+            margin-top: 0;
+            margin-left: 0.5rem;
+
+            font-size: 1.125rem;
+
+            appearance: none;
+            font-style: inherit;
+            font-variant: inherit;
+            font-stretch: inherit;
+            font-optical-sizing: inherit;
+            font-size-adjust: inherit;
+            font-kerning: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-language-override: inherit;
+
+            opacity: 1;
+            text-decoration: none;
+            -webkit-box-align: center;
+            align-items: center;
+            box-sizing: border-box;
+            display: inline-flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            letter-spacing: normal;
+            line-height: 1;
+            user-select: none;
+            border: 0px;
+            cursor: pointer;
+            fill: currentcolor;
+            position: relative;
+            transition-duration: 250ms;
+            transition-property: background-color, border-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
+            vertical-align: text-top;
+            width: auto;
+            font-family: unset;
+            // font-size: 1.5rem;
+            font-weight: 500;
+            min-height: 3.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            --wct--focus-ring--default-color: #a9a9a9;
+            background: rgb(229, 9, 20);
+            color: rgb(255, 255, 255);
+
+            text-transform: none;
+            gap: 0.5rem;
+
+            > span {
+                display: inline-flex;
+                align-items: center;
+                line-height: 1;
+            }
+
+            .btn-arrow {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.3rem;
+                line-height: 1;
+                color: inherit;
+                transform: translateY(0px);
+
+                svg {
+                    width: 1.1em;
+                    height: 1.1em;
+                    stroke: currentColor;
+                    stroke-width: 2;
+                    fill: none;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                }
+            }
+        }
+    }
+}
+
 // home
 .basic-layout {
     word-break: keep-all;
@@ -998,241 +1244,6 @@ body {
                                     //     content: "2";
                                     //     padding: 0 2.625rem;
                                     // }
-
-                                    form {
-                                        display: -webkit-box;
-                                        display: -webkit-flex;
-                                        display: -ms-flexbox;
-                                        display: flex;
-                                        -webkit-flex-direction: column;
-                                        -ms-flex-direction: column;
-                                        flex-direction: column;
-
-                                        h3 {
-                                            text-align: center;
-                                            color: rgb(255, 255, 255);
-
-                                            font-family: unset;
-                                            font-size: 1rem;
-                                            font-weight: 400;
-                                            line-height: 1.5;
-
-                                            @media (min-width: 600px) {
-                                                text-align: center;
-                                            }
-
-                                            // @media screen and (min-width: 960px) {
-                                            //     font-family: unset;
-                                            //     font-size: 1.25rem;
-                                            //     font-weight: 400;
-                                            //     line-height: 1.5;
-                                            // }
-                                        }
-                                        .form-input-container {
-                                            display: -webkit-box;
-                                            display: -webkit-flex;
-                                            display: -ms-flexbox;
-                                            display: flex;
-
-                                            -webkit-flex-direction: row;
-                                            -ms-flex-direction: row;
-                                            flex-direction: row;
-
-                                            -webkit-align-items: flex-start;
-                                            -webkit-box-align: flex-start;
-                                            -ms-flex-align: flex-start;
-                                            align-items: flex-start;
-
-                                            @media (min-width: 600px) {
-                                                -webkit-align-items: center;
-                                                -webkit-box-align: center;
-                                                -ms-flex-align: center;
-                                                align-items: center;
-                                            }
-                                            padding-top: 16px;
-
-                                            text-align: left;
-                                            position: relative;
-                                            width: 100%;
-                                            // max-width: 36.625rem;
-
-                                            .input-wrap {
-                                                width: 100%;
-                                                -webkit-flex: 1 1 auto;
-                                                -ms-flex: 1 1 auto;
-                                                flex: 1 1 auto;
-
-                                                display: inline-flex;
-                                                vertical-align: text-top;
-                                                position: relative;
-                                                flex-wrap: wrap;
-
-                                                .input-control {
-                                                    position: relative;
-                                                    width: 100%;
-                                                }
-
-                                                .input-control input {
-                                                    position: relative;
-                                                    z-index: 1;
-
-                                                    width: 100%;
-                                                    min-width: 15rem;
-                                                    padding: 1.25rem 1rem 0.5rem;
-                                                    border-radius: 0.25rem;
-                                                    border: 0.0625rem solid rgba(255, 255, 255, 0.35);
-                                                    background: rgba(22, 22, 22, 0.7);
-                                                    color: #fff;
-                                                    font-size: 1rem;
-                                                    line-height: 1.5;
-                                                    outline: none;
-
-                                                    &:focus {
-                                                        border-color: rgba(255, 255, 255, 0.85);
-                                                    }
-                                                }
-
-                                                // Floating label (placeholder 역할)
-                                                // - focus or 값이 있으면 위로 올라감
-                                                .input-control label {
-                                                    position: absolute;
-                                                    z-index: 2;
-
-                                                    color: rgba(255, 255, 255, 0.7);
-                                                    font-family: unset;
-                                                    font-size: 1rem;
-                                                    font-weight: 400;
-                                                    left: 1rem;
-                                                    line-height: 1.5;
-                                                    right: 1rem;
-                                                    top: 1rem;
-
-                                                    white-space: nowrap;
-                                                    overflow: hidden;
-                                                    text-overflow: ellipsis;
-                                                    transition-property: top, font-size, line-height;
-                                                    transition-duration: 250ms;
-                                                    pointer-events: none;
-                                                    transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
-                                                }
-
-                                                .input-control:focus-within label {
-                                                    top: 0.5rem;
-                                                    font-size: 0.75rem;
-                                                    line-height: 1rem;
-                                                    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-                                                }
-
-                                                .input-control input:not(:placeholder-shown) + label {
-                                                    top: 0.5rem;
-                                                    font-size: 0.75rem;
-                                                    line-height: 1rem;
-                                                    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-                                                }
-
-                                                // Netflix 스타일처럼 input과 같은 크기로 커지는 에러 테두리 레이어
-                                                .input-control .input-help {
-                                                    position: absolute;
-                                                    inset: 0;
-                                                    z-index: 0;
-
-                                                    background: rgba(22, 22, 22, 0.7);
-                                                    border-radius: 0.25rem;
-                                                    border: 0.0625rem solid rgb(235, 57, 66);
-                                                    opacity: 0;
-                                                    pointer-events: none;
-                                                }
-
-                                                .input-control[data-invalid="true"] .input-help {
-                                                    opacity: 1;
-                                                }
-
-                                                .input-control[data-invalid="true"] input {
-                                                    border-color: rgb(235, 57, 66);
-                                                }
-                                            }
-
-                                            button {
-                                                -webkit-flex: 0 0 auto;
-                                                -ms-flex: 0 0 auto;
-                                                flex: 0 0 auto;
-                                                margin-top: 0;
-                                                margin-left: 0.5rem;
-
-                                                font-size: 1.125rem;
-
-                                                appearance: none;
-                                                font-style: inherit;
-                                                font-variant: inherit;
-                                                font-stretch: inherit;
-                                                font-optical-sizing: inherit;
-                                                font-size-adjust: inherit;
-                                                font-kerning: inherit;
-                                                font-feature-settings: inherit;
-                                                font-variation-settings: inherit;
-                                                font-language-override: inherit;
-
-                                                opacity: 1;
-                                                text-decoration: none;
-                                                -webkit-box-align: center;
-                                                align-items: center;
-                                                box-sizing: border-box;
-                                                display: inline-flex;
-                                                -webkit-box-pack: center;
-                                                justify-content: center;
-                                                letter-spacing: normal;
-                                                line-height: 1;
-                                                user-select: none;
-                                                border: 0px;
-                                                cursor: pointer;
-                                                fill: currentcolor;
-                                                position: relative;
-                                                transition-duration: 250ms;
-                                                transition-property: background-color, border-color;
-                                                transition-timing-function: cubic-bezier(0.4, 0, 0.68, 0.06);
-                                                vertical-align: text-top;
-                                                width: auto;
-                                                font-family: unset;
-                                                // font-size: 1.5rem;
-                                                font-weight: 500;
-                                                min-height: 3.5rem;
-                                                padding: 0.75rem 1.5rem;
-                                                border-radius: 0.25rem;
-                                                --wct--focus-ring--default-color: #a9a9a9;
-                                                background: rgb(229, 9, 20);
-                                                color: rgb(255, 255, 255);
-
-                                                text-transform: none;
-                                                gap: 0.5rem;
-
-                                                > span {
-                                                    display: inline-flex;
-                                                    align-items: center;
-                                                    line-height: 1;
-                                                }
-
-                                                .btn-arrow {
-                                                    display: inline-flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                    font-size: 1.3rem;
-                                                    line-height: 1;
-                                                    color: inherit;
-                                                    transform: translateY(0px);
-
-                                                    svg {
-                                                        width: 1.1em;
-                                                        height: 1.1em;
-                                                        stroke: currentColor;
-                                                        stroke-width: 2;
-                                                        fill: none;
-                                                        stroke-linecap: round;
-                                                        stroke-linejoin: round;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }

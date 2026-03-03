@@ -1,5 +1,7 @@
 package com.example.file.infra.jpa;
 
-public class FileJpaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FileJpaRepository extends JpaRepository<FileJpaEntity, Long> {
     
 }

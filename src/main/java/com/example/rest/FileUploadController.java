@@ -1,6 +1,7 @@
 package com.example.rest;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,5 +26,14 @@ public class FileUploadController {
         @RequestParam(value = "type", defaultValue = "image") String type
     ) throws IOException {
         FileJpaEntity saved = fileUploadService.store(file, type);
+
+        return ResponseEntity.ok(Map.of(
+            "id", saved.getId(),
+            "originalName", saved.getOriginalName(),
+            "storedName", saved.getName(),
+            "path", saved.getPath(),
+            "size", saved.getFileSize(),
+            "contentType", saved.getMimeType()
+        ));
     }
 }

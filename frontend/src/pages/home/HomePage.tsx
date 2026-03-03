@@ -5,8 +5,10 @@ import netflixLogo from "@/assets/logo/logo.svg";
 import { LanguageDropdown, UiAnchorButton } from "@/ui";
 import { useTranslation } from "react-i18next";
 import { LanguageUtil } from "@/utils/language-util";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+    const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const emailId = useId();
     const [email, setEmail] = useState("");
@@ -26,7 +28,6 @@ function HomePage() {
     }, [currentI18nLang]);
 
     useEffect(() => {
-        console.log(lang);
         LanguageUtil.changeLanguage(lang);
     }, [lang]);
 
@@ -35,7 +36,7 @@ function HomePage() {
         if (emailInvalid) {
             return;
         }
-        console.log(email);
+        navigate("/login", { state: { email } });
     };
 
     return (
@@ -128,7 +129,7 @@ function HomePage() {
                                                         />
                                                     </div>
                                                     <div className="button-container-right">
-                                                        <UiAnchorButton href="/login">로그인</UiAnchorButton>
+                                                        <UiAnchorButton href="/login">{t("login")}</UiAnchorButton>
                                                     </div>
                                                 </div>
                                             </div>
@@ -150,13 +151,13 @@ function HomePage() {
                                     <div className="content-area">
                                         <div className="text-container">
                                             <div className="">
-                                                <h1>영화, 시리즈 등을 무제한으로</h1>
-                                                <p>7,000원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.</p>
+                                                <h1>{t("unlimitedMovies")}</h1>
+                                                <p>{t("startsAt")}</p>
                                             </div>
                                             <div className="">
                                                 <div className="form-container">
                                                     <form aria-label="넷플릭스에 가입하거나 멤버십을 재시작하세요." onSubmit={handleSubmit}>
-                                                        <h3>시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일 주소를 입력하세요.</h3>
+                                                        <h3>{t("readyToWatch")}</h3>
                                                         <div className="form-input-container">
                                                             <div className="input-wrap">
                                                                 <div className="input-control" data-invalid={emailInvalid ? "true" : "false"}>
@@ -174,12 +175,12 @@ function HomePage() {
                                                                         onBlur={() => setEmailTouched(true)}
                                                                         aria-invalid={emailInvalid}
                                                                     />
-                                                                    <label htmlFor={emailId}>이메일 주소</label>
+                                                                    <label htmlFor={emailId}>{t("emailAddress")}</label>
                                                                     <div className="input-help"></div>
                                                                 </div>
                                                             </div>
                                                             <button type="submit">
-                                                                <span>시작하기</span>
+                                                                <span>{t("getStarted")}</span>
                                                                 <span className="btn-arrow" aria-hidden={true}>
                                                                     <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                                                                         <path d="M9 5l8 7-8 7" />

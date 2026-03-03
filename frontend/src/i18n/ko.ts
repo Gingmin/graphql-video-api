@@ -1,1 +1,17 @@
-export default {};
+export default {
+    login: "로그인",
+    signUp: "회원가입",
+    password: "비밀번호",
+    unlimitedMovies: "영화, 시리즈 등을 무제한으로",
+    startsAt: "7,000원으로 시작하세요. 멤버십은 언제든지 해지 가능합니다.",
+    readyToWatch: "시청할 준비가 되셨나요? 멤버십을 등록하거나 재시작하려면 이메일 주소를 입력하세요.",
+    emailAddress: "이메일 주소",
+    getStarted: "시작하기",
+    questionPhone: "질문이 있으신가요? 문의 전화: 00-000-000-0000 (수신자 부담)(무료 전화)",
+    frequentlyAskedQuestions: "자주 묻는 질문",
+    businessRegistrationNumber: "사업자등록번호",
+    loginInfo: "로그인 정보를 입력하세요",
+    newAccount: "아니면 새 계정으로 시작하세요.",
+    emailOrPhone: "이메일 주소 또는 휴대폰 번호",
+    next: "다음",
+};

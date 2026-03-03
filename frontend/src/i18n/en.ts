@@ -1,1 +1,17 @@
-export default {};
+export default {
+    login: "Login",
+    signUp: "Sign Up",
+    password: "Password",
+    unlimitedMovies: "Unlimited movies, TV shows, and more",
+    startsAt: "Starts at KRW 7,000. Cancel anytime.",
+    readyToWatch: "Ready to watch? Enter your email to create or restart your membership.",
+    emailAddress: "Email address",
+    getStarted: "Get started",
+    questionPhone: "Questions? Contact us.",
+    frequentlyAskedQuestions: "FAQ",
+    businessRegistrationNumber: "Business registration number",
+    loginInfo: "Enter your info to sign in",
+    newAccount: "Or get started with a new account.",
+    emailOrPhone: "Email or mobile number",
+    next: "Continue",
+};
