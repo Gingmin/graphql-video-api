@@ -21,6 +21,7 @@ function UsersPage() {
             <h1>Users Page</h1>
             <button onClick={handleLogout}>Logout</button>
             <button onClick={() => navigate("/upload")}>Upload</button>
+            <button onClick={() => navigate("/person")}>Person</button>
         </div>
     );
 }

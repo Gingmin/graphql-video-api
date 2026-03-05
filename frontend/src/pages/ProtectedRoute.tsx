@@ -1,11 +1,13 @@
 import { Navigate } from "react-router-dom";
 
-import { useAppSelector } from "@/app/hooks";
+import { useMe } from "@/hooks/useAuth";
 
 const ProtectedRoute = ({ children, permissions }: { children: React.ReactNode; permissions: string[] }) => {
-    const userId = useAppSelector((state) => state.userSlice.id);
-
-    if (!userId) {
+    const { data, isLoading } = useMe();
+    if (isLoading) {
+        return <div>loading...</div>;
+    }
+    if (!data?.me) {
         return <Navigate to="/login" replace />;
     }
 

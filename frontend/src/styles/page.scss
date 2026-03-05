@@ -418,3 +418,52 @@
         cursor: not-allowed;
     }
 }
+.person-page {
+    color: white;
+
+    .list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+        background-color: white;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .list-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border: 1px solid #232327;
+
+        color: black;
+        font-size: 12px;
+        padding: 0.5rem;
+    }
+    .pagination-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    .pagination-container button {
+        padding: 0.5rem 1rem;
+        border: 1px solid #232327;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        color: black;
+        font-size: 12px;
+        cursor: pointer;
+        &:hover {
+            background-color: #f0f0f0;
+        }
+    }
+    .pagination-container button.active {
+        background-color: #000;
+        color: #fff;
+    }
+    .pagination-container button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}

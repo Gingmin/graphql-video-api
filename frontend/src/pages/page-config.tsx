@@ -11,6 +11,7 @@ import SignUpPage from "@/pages/login/SignUpPage";
 
 import UsersPage from "@/pages/UsersPage";
 import FileUploadPage from "@/pages/upload/FileUploadPage";
+import PersonPage from "@/pages/person/PersonPage";
 
 export interface PageConfig {
     path: string;
@@ -55,6 +56,15 @@ export const pages: PageConfig[] = [
         component: FileUploadPage,
         meta: {
             title: "파일 업로드",
+            requiresAuth: true,
+            permissions: ["admin"],
+        },
+    },
+    {
+        path: "/person",
+        component: PersonPage,
+        meta: {
+            title: "사람 관리",
             requiresAuth: true,
             permissions: ["admin"],
         },
