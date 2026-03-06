@@ -118,13 +118,13 @@ function PersonPage() {
 
             <div>
                 <div>
-                    <input type="text" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
+                    <input tabIndex={1} type="text" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
                 </div>
                 <div>
-                    <input type="text" placeholder="Birth Date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+                    <input tabIndex={2} type="text" placeholder="Birth Date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
                 </div>
                 <div>
-                    <input type="text" placeholder="Nationality" value={nationality} onChange={(e) => setNationality(e.target.value)} />
+                    <input tabIndex={3} type="text" placeholder="Nationality" value={nationality} onChange={(e) => setNationality(e.target.value)} />
                 </div>
                 <div>
                     <button onClick={handleAddPerson}>Add Person</button>
@@ -157,7 +157,7 @@ function PersonPage() {
                             return Array.from({ length: end - start }, (_, i) => {
                                 const p = start + i;
                                 return (
-                                    <button key={p} className={p === page ? "active" : ""} onClick={() => setPage(p)} disabled={p === page}>
+                                    <button key={p + "-" + i} className={p === page ? "active" : ""} onClick={() => setPage(p)} disabled={p === page}>
                                         {p + 1}
                                     </button>
                                 );

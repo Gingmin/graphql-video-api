@@ -1,0 +1,24 @@
+extend type Query {
+    persons(page: Int = 0, size: Int = 20): PersonPage!
+    person(id: ID!): Person
+}
+
+extend type Mutation {
+    addPerson(code: String!, birthDate: String, nationality: String): Person!
+    modifyPerson(id: ID!, code: String!, birthDate: String, nationality: String): Person!
+    deletePerson(id: ID!): Boolean!
+}
+
+type Person {
+    id: ID!
+    code: String!
+    birthDate: String
+    nationality: String
+    createdAt: String
+    modifiedAt: String
+}
+
+type PersonPage {
+    items: [Person!]!
+    pageInfo: PageInfo!
+}

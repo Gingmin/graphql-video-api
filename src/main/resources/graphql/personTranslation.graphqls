@@ -1,0 +1,24 @@
+extend type Query {
+    personTranslations(personId: ID!): PersonTranslationPage!
+    personTranslation(id: ID!): PersonTranslation
+}
+
+extend type Mutation {
+    addPersonTranslation(personId: ID!, language: String!, name: String!): PersonTranslation!
+    modifyPersonTranslation(id: ID!, personId: ID!, language: String!, name: String!): PersonTranslation!
+    deletePersonTranslation(id: ID!): Boolean!
+}
+
+type PersonTranslation {
+    id: ID!
+    personId: ID!
+    language: String!
+    name: String!
+    createdAt: String
+    modifiedAt: String
+}
+
+type PersonTranslationPage {
+    items: [PersonTranslation!]!
+    pageInfo: PageInfo!
+}

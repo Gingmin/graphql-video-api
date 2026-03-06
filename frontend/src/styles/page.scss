@@ -429,6 +429,8 @@
         background-color: white;
         margin-top: 1rem;
         margin-bottom: 1rem;
+        min-height: 286px;
+        justify-content: space-between;
     }
     .list-item {
         display: flex;

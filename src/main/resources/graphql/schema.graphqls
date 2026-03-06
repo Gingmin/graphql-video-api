@@ -10,3 +10,12 @@ type Query {
 type Mutation {
     _empty: String
 }
+
+type PageInfo {
+    page: Int!
+    size: Int!
+    totalElements: Int!
+    totalPages: Int!
+    hasNext: Boolean!
+    hasPrev: Boolean!
+}

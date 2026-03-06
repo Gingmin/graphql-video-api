@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import java.time.Instant;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
@@ -17,16 +16,13 @@ import com.example.graphql.user.UserQueryController;
 import com.example.graphql.user.UserGql;
 import com.example.user.domain.User;
 
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import com.example.graphql.CommonUtil;
 
 @GraphQlTest({UserQueryController.class, UserMutationController.class})
 public class UserTest {
     @Autowired GraphQlTester graphQlTester;
 
     @MockitoBean UserService userService;
-
-    private static final DateTimeFormatter ISO_INSTANT = DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC);
 
     @Test
     void signUp() {
@@ -56,9 +52,9 @@ public class UserTest {
                 assertThat(v.name()).isEqualTo("mk");
                 assertThat(v.email()).isEqualTo("mk@example.com");
                 assertThat(v.latestLoginIp()).isNull();
-                assertThat(v.lastLoginDate()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
-                assertThat(v.createdAt()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
-                assertThat(v.modifiedAt()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
+                assertThat(v.lastLoginDate()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
+                assertThat(v.createdAt()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
+                assertThat(v.modifiedAt()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
             });
     }
 
@@ -91,9 +87,9 @@ public class UserTest {
                     assertThat(v.name()).isEqualTo("mk");
                     assertThat(v.email()).isEqualTo("mk@example.com");
                     assertThat(v.latestLoginIp()).isNull();
-                    assertThat(v.lastLoginDate()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
-                    assertThat(v.createdAt()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
-                    assertThat(v.modifiedAt()).isEqualTo(ISO_INSTANT.format(Instant.EPOCH));
+                    assertThat(v.lastLoginDate()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
+                    assertThat(v.createdAt()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
+                    assertThat(v.modifiedAt()).isEqualTo(CommonUtil.ISO_INSTANT.format(Instant.EPOCH));
                 });
     }
 
