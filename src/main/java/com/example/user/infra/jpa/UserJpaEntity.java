@@ -33,9 +33,6 @@ public class UserJpaEntity {
     @Column(name = "last_login_date")
     private Instant lastLoginDate;
 
-    @Column(name = "jti")
-    private UUID jti;
-
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -53,14 +50,12 @@ public class UserJpaEntity {
     , String password
     , String latestLoginIp
     , Instant lastLoginDate
-    , UUID jti
     ) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.latestLoginIp = latestLoginIp;
         this.lastLoginDate = lastLoginDate;
-        this.jti = jti;
     }
 
     public UserJpaEntity(String name, String email, String password) {
@@ -114,14 +109,6 @@ public class UserJpaEntity {
 
     public Instant getLastLoginDate() {
         return lastLoginDate;
-    }
-
-    public void setJti(UUID jti) {
-        this.jti = jti;
-    }
-
-    public UUID getJti() {
-        return jti;
     }
 
     public Instant getCreatedAt() {

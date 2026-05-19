@@ -19,9 +19,21 @@ function UsersPage() {
     return (
         <div className="common-page">
             <h1>Users Page</h1>
-            <button onClick={handleLogout}>Logout</button>
-            <button onClick={() => navigate("/upload")}>Upload</button>
-            <button onClick={() => navigate("/person")}>Person</button>
+            <div className="button-container">
+                <div>
+                    <button className="confirm-button" onClick={handleLogout}>
+                        Logout
+                    </button>
+                </div>
+                <div>
+                    <button className="go-button" onClick={() => navigate("/person")}>
+                        Person
+                    </button>
+                    <button className="go-button" onClick={() => navigate("/upload")}>
+                        Upload
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

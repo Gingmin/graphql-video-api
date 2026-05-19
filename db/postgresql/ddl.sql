@@ -2,12 +2,11 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users
 (
     id bigserial primary key,
-    email varchar(255) not null unique,
+    email varchar(255) not null,
     name varchar(100) not null,
     password varchar(255) not null,
     latest_login_ip varchar(45),
     last_login_date timestamptz,
-    jti uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false
@@ -18,11 +17,12 @@ COMMENT ON COLUMN users.name IS '이름';
 COMMENT ON COLUMN users.password IS '비밀번호';
 COMMENT ON COLUMN users.latest_login_ip IS '최근 로그인 IP';
 COMMENT ON COLUMN users.last_login_date IS '마지막 로그인 일시';
-COMMENT ON COLUMN users.jti IS 'jti';
 COMMENT ON COLUMN users.created_at IS '생성일';
 COMMENT ON COLUMN users.modified_at IS '수정일';
 COMMENT ON COLUMN users.is_deleted IS '삭제여부';
 COMMENT ON TABLE users IS '유저';
+
+CREATE UNIQUE INDEX IF NOT EXISTS "uq_users_email" ON users(email) WHERE is_deleted = false;
 
 DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files
@@ -54,10 +54,10 @@ DROP TABLE IF EXISTS profiles CASCADE;
 CREATE TABLE profiles
 (
     id bigserial primary key,
-    user_id bigint not null references users(id) on delete cascade,
+    user_id bigint not null,
     name varchar(255) not null,
     profile_type varchar(15) not null check (profile_type in ('GENERAL', 'KIDS')),
-    thumbnail_file_id bigint references files(id) on delete set null,
+    thumbnail_file_id bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -82,8 +82,8 @@ CREATE TABLE contents
     title varchar(255) not null,
     description text,
     age_rating varchar(10) not null check (age_rating in ('ALL', '12', '15', '19')),
-    thumbnail_file_id bigint references files(id) on delete set null,
-    trailer_file_id bigint references files(id) on delete set null,
+    thumbnail_file_id bigint,
+    trailer_file_id bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false
@@ -104,8 +104,8 @@ DROP TABLE IF EXISTS wishlists CASCADE;
 CREATE TABLE wishlists
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
-    profile_id bigint not null references profiles(id) on delete cascade,
+    content_id bigint not null,
+    profile_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -145,9 +145,9 @@ DROP TABLE IF EXISTS evaluations CASCADE;
 CREATE TABLE evaluations
 (
     id bigserial primary key,
-    evaluation_codes_id bigint not null references evaluation_codes(id) on delete cascade,
-    content_id bigint not null references contents(id) on delete cascade,
-    profile_id bigint not null references profiles(id) on delete cascade,
+    evaluation_codes_id bigint not null,
+    content_id bigint not null,
+    profile_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -167,7 +167,7 @@ DROP TABLE IF EXISTS videos CASCADE;
 CREATE TABLE videos
 (
     id bigserial primary key,
-    video_file_id bigint not null references files(id) on delete cascade,
+    video_file_id bigint not null,
     cumulative_viewing_time bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -186,8 +186,8 @@ CREATE TABLE subtitles
 (
     id bigserial primary key,
     language_type varchar(10) not null check (language_type in ('KO', 'EN')),
-    subtitle_file_id bigint not null references files(id) on delete cascade,
-    video_id bigint references videos(id) on delete set null,
+    subtitle_file_id bigint not null,
+    video_id bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -207,9 +207,9 @@ DROP TABLE IF EXISTS movies CASCADE;
 CREATE TABLE movies
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
+    content_id bigint not null,
     duration_seconds integer not null,
-    video_id bigint not null references videos(id) on delete cascade,
+    video_id bigint not null,
     release_date date,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -229,7 +229,7 @@ DROP TABLE IF EXISTS series CASCADE;
 CREATE TABLE series
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
+    content_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false
@@ -245,7 +245,7 @@ DROP TABLE IF EXISTS seasons CASCADE;
 CREATE TABLE seasons
 (
     id bigserial primary key,
-    series_id bigint not null references series(id) on delete cascade,
+    series_id bigint not null,
     season_number integer not null,
     title varchar(255) not null,
     description text,
@@ -269,12 +269,12 @@ DROP TABLE IF EXISTS episodes CASCADE;
 CREATE TABLE episodes
 (
     id bigserial primary key,
-    season_id bigint not null references seasons(id) on delete cascade,
+    season_id bigint not null,
     episode_number integer not null,
     title varchar(255) not null,
     description text,
     duration_seconds integer not null,
-    video_id bigint not null references videos(id) on delete cascade,
+    video_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -313,8 +313,8 @@ DROP TABLE IF EXISTS content_genres CASCADE;
 CREATE TABLE content_genres
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
-    genre_id bigint not null references genres(id) on delete cascade,
+    content_id bigint not null,
+    genre_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -333,7 +333,7 @@ DROP TABLE IF EXISTS genre_translation CASCADE;
 CREATE TABLE genre_translation
 (
     id bigserial primary key,
-    genre_id bigint not null references genres(id) on delete cascade,
+    genre_id bigint not null,
     language varchar(10) not null check (language in ('KO', 'EN')),
     name varchar(255) not null,
     created_at timestamptz not null default now(),
@@ -373,8 +373,8 @@ DROP TABLE IF EXISTS content_tags CASCADE;
 CREATE TABLE content_tags
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
-    tag_id bigint not null references tags(id) on delete cascade,
+    content_id bigint not null,
+    tag_id bigint not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -393,7 +393,7 @@ DROP TABLE IF EXISTS tag_translation CASCADE;
 CREATE TABLE tag_translation
 (
     id bigserial primary key,
-    tag_id bigint not null references tags(id) on delete cascade,
+    tag_id bigint not null,
     language varchar(10) not null check (language in ('KO', 'EN')),
     name varchar(255) not null,
     created_at timestamptz not null default now(),
@@ -435,7 +435,7 @@ DROP TABLE IF EXISTS person_translation CASCADE;
 CREATE TABLE person_translation
 (
     id bigserial primary key,
-    person_id bigint not null references persons(id) on delete cascade,
+    person_id bigint not null,
     language varchar(10) not null check (language in ('KO', 'EN')),
     name varchar(255) not null,
     created_at timestamptz not null default now(),
@@ -475,9 +475,9 @@ DROP TABLE IF EXISTS content_persons CASCADE;
 CREATE TABLE content_persons
 (
     id bigserial primary key,
-    content_id bigint not null references contents(id) on delete cascade,
-    person_id bigint not null references persons(id) on delete cascade,
-    role_type_code_id bigint not null references role_type_codes(id) on delete cascade,
+    content_id bigint not null,
+    person_id bigint not null,
+    role_type_code_id bigint not null,
     role_name varchar(255),
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -497,10 +497,10 @@ DROP TABLE IF EXISTS episode_watching CASCADE;
 CREATE TABLE episode_watching
 (
     id bigserial primary key,
-    profile_id bigint not null references profiles(id) on delete cascade,
-    episode_id bigint not null references episodes(id) on delete cascade,
+    profile_id bigint not null,
+    episode_id bigint not null,
     timeline integer not null,
-    subtitle_id bigint references subtitles(id) on delete set null,
+    subtitle_id bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -521,10 +521,10 @@ DROP TABLE IF EXISTS movie_watching CASCADE;
 CREATE TABLE movie_watching
 (
     id bigserial primary key,
-    profile_id bigint not null references profiles(id) on delete cascade,
-    movie_id bigint not null references movies(id) on delete cascade,
+    profile_id bigint not null,
+    movie_id bigint not null,
     timeline integer not null,
-    subtitle_id bigint references subtitles(id) on delete set null,
+    subtitle_id bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,

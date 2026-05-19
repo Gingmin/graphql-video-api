@@ -51,14 +51,9 @@ export default function SignUpPage() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-        // const name = formData.get("name") as string;
-        // const email = formData.get("email") as string;
-        // const password = formData.get("password") as string;
         const _name = name;
         const _email = email;
         const _password = password;
-        console.log(_name, _email, _password);
 
         if (_name === "") {
             nameInputRef.current?.focus();
@@ -80,9 +75,9 @@ export default function SignUpPage() {
         <div className="common-page">
             <h1>Sign Up Page</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} ref={nameInputRef} />
+                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} ref={emailInputRef} />
+                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} ref={passwordInputRef} />
                 <button type="submit">Sign Up</button>
             </form>
             <button type="button" onClick={() => navigate("/login")}>

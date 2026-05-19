@@ -30,10 +30,9 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public void login(long id, String jti, String clientIp) {
+    public void login(long id, String clientIp) {
         var entity = jpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found"));
 
-        entity.setJti(UUID.fromString(jti));
         entity.setLatestLoginIp(clientIp);
         entity.setLastLoginDate(Instant.now());
         jpaRepository.save(entity);

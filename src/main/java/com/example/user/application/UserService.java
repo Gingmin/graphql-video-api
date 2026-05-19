@@ -62,18 +62,16 @@ public class UserService {
             throw new IllegalArgumentException("invalid credentials");
         }
 
-        String jti = UUID.randomUUID().toString();
         User user = auth.user();
         String id = String.valueOf(user.id());
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", id);
-        claims.put("jti", jti);
         claims.put("email", email);
         
         var token = jwtService.generateToken(id, claims);
 
-        userRepository.login(user.id(), jti, clientIp);
+        userRepository.login(user.id(), clientIp);
 
         return new AuthResult(user, token);
     }

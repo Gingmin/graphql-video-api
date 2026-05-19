@@ -19,15 +19,15 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public PersonPage persons() {
-        return persons(0, 20);
+        return persons(1, 20);
     }
 
     @Transactional(readOnly = true)
     public PersonPage persons(Integer page, Integer size) {
-        int p = page == null ? 0 : page;
+        int p = page == null ? 1 : page;
         int s = size == null ? 20 : size;
-        if (p < 0) {
-            throw new IllegalArgumentException("page must be greater than 0");
+        if (p < 1) {
+            throw new IllegalArgumentException("page must be greater than or equal to 1");
         }
         if (s < 1 || s > 100) {
             throw new IllegalArgumentException("size must be between 1 and 100");

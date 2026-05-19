@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User create(String name, String email, String passwordHash);
 
-    void login(long userId, String jti, String clientIp);
+    void login(long userId, String clientIp);
 
     boolean existsByEmail(String email);
 

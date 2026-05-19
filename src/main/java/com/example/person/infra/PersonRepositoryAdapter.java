@@ -35,14 +35,14 @@ public class PersonRepositoryAdapter implements PersonRepository {
 
     @Override
     public PersonPage findPage(Integer page, Integer size) {
-        var pageable = PageRequest.of(page, size);
+        var pageable = PageRequest.of(page - 1, size);
         var pageResult = jpaRepository.findPage(pageable);
         var persons = pageResult.getContent();
 
         if (persons.isEmpty()) {
             return new PersonPage(
                 List.of(),
-                pageResult.getNumber(),
+                pageResult.getNumber() + 1,
                 pageResult.getSize(),
                 pageResult.getTotalElements(),
                 pageResult.getTotalPages(),
@@ -55,7 +55,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
 
         return new PersonPage(
             items,
-            pageResult.getNumber(),
+            pageResult.getNumber() + 1,
             pageResult.getSize(),
             pageResult.getTotalElements(),
             pageResult.getTotalPages(),
