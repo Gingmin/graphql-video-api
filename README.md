@@ -13,7 +13,7 @@
 ### 1) 백엔드
 
 ```bash
-.\gradlew.bat bootRun
+.\gradlew.bat bootRun -PskipFrontend
 ```
 
 - GraphiQL: `http://localhost:8080/graphiql`
