@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { useAddPerson, useDeletePerson, useModifyPerson, usePerson, usePersons } from "@/hooks/usePerson";
+import { useAddPerson, useDeletePerson, useModifyPerson, usePerson, usePersons, useAddPersonTranslation, useModifyPersonTranslation, useDeletePersonTranslation } from "@/hooks/usePerson";
+
+type PersonTranslation = {
+    id: string;
+    personId: string;
+    language: string;
+    name: string;
+    createdAt?: string;
+    modifiedAt?: string;
+};
 
 type Person = {
     id: string;
@@ -11,6 +20,7 @@ type Person = {
     nationality?: string;
     createdAt?: string;
     modifiedAt?: string;
+    translations?: PersonTranslation[];
 };
 
 function formatDateTime(iso?: string): string {
@@ -45,6 +55,13 @@ function PersonPage() {
     const [editBirthDate, setEditBirthDate] = useState("");
     const [editNationality, setEditNationality] = useState("");
 
+    // translation form state
+    const [transLanguage, setTransLanguage] = useState("KO");
+    const [transName, setTransName] = useState("");
+    const [editingTranslation, setEditingTranslation] = useState<PersonTranslation | null>(null);
+    const [editTransLanguage, setEditTransLanguage] = useState("");
+    const [editTransName, setEditTransName] = useState("");
+
     // -------------------- query ------------------------
 
     const personsQuery = usePersons(page, size);
@@ -60,7 +77,9 @@ function PersonPage() {
         }
     }, [personQuery.data]);
 
-    // -------------------- add ------------------------
+    const translations: PersonTranslation[] = personQuery.data?.person?.translations ?? [];
+
+    // -------------------- add person ------------------------
     const addPersonMutation = useAddPerson(() => {
         setCode("");
         setBirthDate("");
@@ -71,7 +90,7 @@ function PersonPage() {
         addPersonMutation.mutate({ code, birthDate, nationality });
     };
 
-    // -------------------- modify ------------------------
+    // -------------------- modify person ------------------------
     const modifyPersonMutation = useModifyPerson(() => {
         setSelectedPerson(null);
         setIsEditing(false);
@@ -89,7 +108,7 @@ function PersonPage() {
         });
     };
 
-    // -------------------- delete ------------------------
+    // -------------------- delete person ------------------------
     const deletePersonMutation = useDeletePerson(() => {
         setSelectedPerson(null);
     });
@@ -104,11 +123,68 @@ function PersonPage() {
         deletePersonMutation.mutate(selectedPerson.id);
     };
 
+    // -------------------- translation mutations ------------------------
+    const addTransMutation = useAddPersonTranslation(() => {
+        setTransLanguage("KO");
+        setTransName("");
+    });
+
+    const modifyTransMutation = useModifyPersonTranslation(() => {
+        setEditingTranslation(null);
+        setEditTransLanguage("");
+        setEditTransName("");
+    });
+
+    const deleteTransMutation = useDeletePersonTranslation(selectedPerson?.id ?? "");
+
+    const handleAddTranslation = () => {
+        if (!selectedPerson) {
+            return;
+        }
+        addTransMutation.mutate({
+            personId: selectedPerson.id,
+            language: transLanguage,
+            name: transName,
+        });
+    };
+
+    const handleStartEditTranslation = (trans: PersonTranslation) => {
+        setEditingTranslation(trans);
+        setEditTransLanguage(trans.language);
+        setEditTransName(trans.name);
+    };
+
+    const handleSaveTranslation = () => {
+        if (!editingTranslation || !selectedPerson) {
+            return;
+        }
+        modifyTransMutation.mutate({
+            id: editingTranslation.id,
+            personId: selectedPerson.id,
+            language: editTransLanguage,
+            name: editTransName,
+        });
+    };
+
+    const handleCancelEditTranslation = () => {
+        setEditingTranslation(null);
+        setEditTransLanguage("");
+        setEditTransName("");
+    };
+
+    const handleDeleteTranslation = (transId: string) => {
+        if (!confirm("정말 삭제하시겠습니까?")) {
+            return;
+        }
+        deleteTransMutation.mutate(transId);
+    };
+
     // -------------------- handle ------------------------
 
     const handleRowClick = (person: Person) => {
         setSelectedPerson(person);
         setIsEditing(false);
+        setEditingTranslation(null);
     };
 
     const handleEdit = () => {
@@ -127,6 +203,7 @@ function PersonPage() {
     const handleCloseDetail = () => {
         setSelectedPerson(null);
         setIsEditing(false);
+        setEditingTranslation(null);
     };
 
     return (
@@ -254,6 +331,74 @@ function PersonPage() {
                             </div>
                         </div>
                     )}
+
+                    {/* Translations */}
+                    <div className="translation-section">
+                        <h3>Translations</h3>
+                        {personQuery.isLoading && <p>Loading translations...</p>}
+                        <table className="translation-table">
+                            <thead>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {translations.map((trans) =>
+                                    editingTranslation?.id === trans.id ? (
+                                        <tr key={trans.id}>
+                                            <td>
+                                                <select className="input-field" value={editTransLanguage} onChange={(e) => setEditTransLanguage(e.target.value)}>
+                                                    <option value="KO">KO</option>
+                                                    <option value="EN">EN</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input className="input-field" type="text" value={editTransName} onChange={(e) => setEditTransName(e.target.value)} />
+                                            </td>
+                                            <td>
+                                                <div className="translation-actions">
+                                                    <button className="confirm-button" onClick={handleSaveTranslation}>
+                                                        Save
+                                                    </button>
+                                                    <button className="cancel-button" onClick={handleCancelEditTranslation}>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        <tr key={trans.id}>
+                                            <td>{trans.language}</td>
+                                            <td>{trans.name}</td>
+                                            <td>
+                                                <div className="translation-actions">
+                                                    <button className="confirm-button" onClick={() => handleStartEditTranslation(trans)}>
+                                                        Edit
+                                                    </button>
+                                                    <button className="cancel-button" onClick={() => handleDeleteTranslation(trans.id)}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ),
+                                )}
+                            </tbody>
+                        </table>
+
+                        <div className="translation-add-form">
+                            <select className="input-field" value={transLanguage} onChange={(e) => setTransLanguage(e.target.value)}>
+                                <option value="KO">KO</option>
+                                <option value="EN">EN</option>
+                            </select>
+                            <input className="input-field" type="text" placeholder="Name" value={transName} onChange={(e) => setTransName(e.target.value)} />
+                            <button className="confirm-button" onClick={handleAddTranslation} disabled={!transName.trim()}>
+                                Add
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

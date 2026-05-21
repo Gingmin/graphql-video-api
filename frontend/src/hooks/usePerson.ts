@@ -66,9 +66,53 @@ const PERSON = gql`
             nationality
             createdAt
             modifiedAt
+            translations {
+                id
+                personId
+                language
+                name
+                createdAt
+                modifiedAt
+            }
         }
     }
 `;
+
+const ADD_PERSON_TRANSLATION = gql`
+    mutation AddPersonTranslation($personId: ID!, $language: String!, $name: String!) {
+        addPersonTranslation(personId: $personId, language: $language, name: $name) {
+            id
+            personId
+            language
+            name
+            createdAt
+            modifiedAt
+        }
+    }
+`;
+
+const MODIFY_PERSON_TRANSLATION = gql`
+    mutation ModifyPersonTranslation($id: ID!, $language: String!, $name: String!) {
+        modifyPersonTranslation(id: $id, language: $language, name: $name) {
+            id
+            language
+            name
+            createdAt
+            modifiedAt
+        }
+    }
+`;
+
+const DELETE_PERSON_TRANSLATION = gql`
+    mutation DeletePersonTranslation($id: ID!) {
+        deletePersonTranslation(id: $id)
+    }
+`;
+
+const errorHandler = (error: any) => {
+    const msg = error.response?.errors?.[0]?.message ?? "알 수 없는 오류";
+    alert(msg);
+};
 
 export const usePersons = (page: number, size: number) => {
     return useQuery({
@@ -98,8 +142,7 @@ export const useAddPerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            const msg = error.response?.errors?.[0]?.message ?? "알 수 없는 오류";
-            alert(msg);
+            errorHandler(error);
         },
     });
 };
@@ -115,8 +158,7 @@ export const useModifyPerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            const msg = error.response?.errors?.[0]?.message ?? "알 수 없는 오류";
-            alert(msg);
+            errorHandler(error);
         },
     });
 };
@@ -132,8 +174,55 @@ export const useDeletePerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            const msg = error.response?.errors?.[0]?.message ?? "알 수 없는 오류";
-            alert(msg);
+            errorHandler(error);
+        },
+    });
+};
+
+export const useAddPersonTranslation = (thenFn?: () => void) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (vars: { personId: string; language: string; name: string }) => {
+            return gqlClient.request(ADD_PERSON_TRANSLATION, vars);
+        },
+        onSuccess: (_data, vars) => {
+            queryClient.invalidateQueries({ queryKey: ["person", vars.personId] });
+            thenFn?.();
+        },
+        onError: (error: any) => {
+            errorHandler(error);
+        },
+    });
+};
+
+export const useModifyPersonTranslation = (thenFn?: () => void) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (vars: { id: string; personId: string; language: string; name: string }) => {
+            return gqlClient.request(MODIFY_PERSON_TRANSLATION, vars);
+        },
+        onSuccess: (_data, vars) => {
+            queryClient.invalidateQueries({ queryKey: ["person", vars.personId] });
+            thenFn?.();
+        },
+        onError: (error: any) => {
+            errorHandler(error);
+        },
+    });
+};
+
+export const useDeletePersonTranslation = (personId: string, thenFn?: () => void) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: string) => {
+            return gqlClient.request(DELETE_PERSON_TRANSLATION, { id });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["person", personId] });
+            thenFn?.();
+        },
+        onError: (error: any) => {
+            errorHandler(error);
         },
     });
 };
