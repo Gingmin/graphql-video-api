@@ -16,9 +16,19 @@ type Person {
     nationality: String
     createdAt: String
     modifiedAt: String
+    translations: [PersonTranslation!]!
 }
 
 type PersonPage {
     items: [Person!]!
     pageInfo: PageInfo!
+}
+
+type PersonTranslation {
+    id: ID!
+    personId: ID!
+    language: String!
+    name: String!
+    createdAt: String
+    modifiedAt: String
 }

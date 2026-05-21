@@ -1,5 +1,10 @@
 package com.example.graphql.personTranslation;
 
-public class PersonTranslationGql {
-    
-}
+public record PersonTranslationGql(
+    String id,
+    String personId,
+    String language,
+    String name,
+    String createdAt,
+    String modifiedAt
+) {}
