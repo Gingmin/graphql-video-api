@@ -29,6 +29,9 @@ function UsersPage() {
                     <button className="go-button" onClick={() => navigate("/person")}>
                         Person
                     </button>
+                    <button className="go-button" onClick={() => navigate("/tag")}>
+                        Tag
+                    </button>
                     <button className="go-button" onClick={() => navigate("/upload")}>
                         Upload
                     </button>

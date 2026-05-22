@@ -1,5 +1,5 @@
 extend type Query {
-    persons(page: Int = 0, size: Int = 20): PersonPage!
+    persons(page: Int = 1, size: Int = 20): PersonPage!
     person(id: ID!): Person
 }
 

@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gqlClient } from "@/lib/graphql/client";
 import { gql } from "graphql-request";
 
+import { ErrorUtil } from "@/utils/error-util";
+
 const ADD_PERSON = gql`
     mutation AddPerson($code: String!, $birthDate: String, $nationality: String) {
         addPerson(code: $code, birthDate: $birthDate, nationality: $nationality) {
@@ -109,11 +111,6 @@ const DELETE_PERSON_TRANSLATION = gql`
     }
 `;
 
-const errorHandler = (error: any) => {
-    const msg = error.response?.errors?.[0]?.message ?? "알 수 없는 오류";
-    alert(msg);
-};
-
 export const usePersons = (page: number, size: number) => {
     return useQuery({
         queryKey: ["persons", { page, size }],
@@ -142,7 +139,7 @@ export const useAddPerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };
@@ -158,7 +155,7 @@ export const useModifyPerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };
@@ -174,7 +171,7 @@ export const useDeletePerson = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };
@@ -190,7 +187,7 @@ export const useAddPersonTranslation = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };
@@ -206,7 +203,7 @@ export const useModifyPersonTranslation = (thenFn?: () => void) => {
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };
@@ -222,7 +219,7 @@ export const useDeletePersonTranslation = (personId: string, thenFn?: () => void
             thenFn?.();
         },
         onError: (error: any) => {
-            errorHandler(error);
+            ErrorUtil.errorHandler(error);
         },
     });
 };

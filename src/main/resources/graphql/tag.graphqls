@@ -1,0 +1,32 @@
+extend type Query {
+    tags(page: Int = 1, size: Int = 20): TagPage!
+    tag(id: ID!): Tag
+}
+
+extend type Mutation {
+    addTag(code: String!): Tag!
+    modifyTag(id: ID!, code: String!): Tag!
+    deleteTag(id: ID!): Boolean!
+}
+
+type Tag {
+    id: ID!
+    code: String
+    createdAt: String
+    modifiedAt: String
+    translations: [Tag!]!
+}
+
+type TagPage {
+    items: [Tag!]!
+    pageInfo: PageInfo!
+}
+
+type TagTranslation {
+    id: ID!
+    tagId: ID!
+    language: String!
+    name: String!
+    createdAt: String
+    modifiedAt: String
+}

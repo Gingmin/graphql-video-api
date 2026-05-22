@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import { DateUtil } from "@/utils/date-util";
 import { useAddPerson, useDeletePerson, useModifyPerson, usePerson, usePersons, useAddPersonTranslation, useModifyPersonTranslation, useDeletePersonTranslation } from "@/hooks/usePerson";
 
 type PersonTranslation = {
@@ -15,29 +16,13 @@ type PersonTranslation = {
 
 type Person = {
     id: string;
-    code?: string;
+    code: string;
     birthDate?: string;
     nationality?: string;
     createdAt?: string;
     modifiedAt?: string;
     translations?: PersonTranslation[];
 };
-
-function formatDateTime(iso?: string): string {
-    if (!iso) {
-        return "";
-    }
-    const d = new Date(iso);
-    const pad = (n: number) => String(n).padStart(2, "0");
-
-    const year = d.getFullYear();
-    const month = pad(d.getMonth() + 1);
-    const day = pad(d.getDate());
-    const hours = pad(d.getHours());
-    const minutes = pad(d.getMinutes());
-    const seconds = pad(d.getSeconds());
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 function PersonPage() {
     const navigate = useNavigate();
@@ -55,7 +40,7 @@ function PersonPage() {
     const [editBirthDate, setEditBirthDate] = useState("");
     const [editNationality, setEditNationality] = useState("");
 
-    // translation form state
+    // -------------------- translation form state ------------------------
     const [transLanguage, setTransLanguage] = useState("KO");
     const [transName, setTransName] = useState("");
     const [editingTranslation, setEditingTranslation] = useState<PersonTranslation | null>(null);
@@ -207,7 +192,7 @@ function PersonPage() {
     };
 
     return (
-        <div className="person-page">
+        <div className="api-page">
             <h1>Person Page</h1>
 
             <div className="button-container">
@@ -237,8 +222,8 @@ function PersonPage() {
                                 <td>{person.code}</td>
                                 <td>{person.birthDate}</td>
                                 <td>{person.nationality}</td>
-                                <td>{formatDateTime(person.createdAt)}</td>
-                                <td>{formatDateTime(person.modifiedAt)}</td>
+                                <td>{DateUtil.formatDateTime(person.createdAt)}</td>
+                                <td>{DateUtil.formatDateTime(person.modifiedAt)}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -315,11 +300,11 @@ function PersonPage() {
                             </div>
                             <div className="detail-field">
                                 <label>Created At</label>
-                                <span>{formatDateTime(selectedPerson.createdAt)}</span>
+                                <span>{DateUtil.formatDateTime(selectedPerson.createdAt)}</span>
                             </div>
                             <div className="detail-field">
                                 <label>Modified At</label>
-                                <span>{formatDateTime(selectedPerson.modifiedAt)}</span>
+                                <span>{DateUtil.formatDateTime(selectedPerson.modifiedAt)}</span>
                             </div>
                             <div className="detail-actions">
                                 <button className="confirm-button" onClick={handleEdit}>
@@ -402,8 +387,8 @@ function PersonPage() {
                 </div>
             )}
 
-            <div className="add-person-container">
-                <div className="add-person-form">
+            <div className="add-api-container">
+                <div className="add-api-form">
                     <div>
                         <input className="input-field" tabIndex={1} type="text" placeholder="Code" value={code} onChange={(e) => setCode(e.target.value)} />
                     </div>

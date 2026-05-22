@@ -355,7 +355,7 @@ DROP TABLE IF EXISTS tags CASCADE;
 CREATE TABLE tags
 (
     id bigserial primary key,
-    code varchar(50) not null,
+    code varchar(50) not null unique,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
