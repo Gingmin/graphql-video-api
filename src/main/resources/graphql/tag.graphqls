@@ -14,19 +14,10 @@ type Tag {
     code: String
     createdAt: String
     modifiedAt: String
-    translations: [Tag!]!
+    translations: [Translation!]!
 }
 
 type TagPage {
     items: [Tag!]!
     pageInfo: PageInfo!
-}
-
-type TagTranslation {
-    id: ID!
-    tagId: ID!
-    language: String!
-    name: String!
-    createdAt: String
-    modifiedAt: String
 }

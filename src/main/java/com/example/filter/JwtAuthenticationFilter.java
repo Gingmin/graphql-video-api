@@ -46,14 +46,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = userService.getById(subject);
+                try {
+                    User user = userService.getById(subject);
 
-                // 신뢰도 강화를 위해 DB에서 조회된 user와 token subject를 한번 더 교차검증
-                if (user != null && String.valueOf(user.id()).equals(subject)) {
-                    UsernamePasswordAuthenticationToken auth =
-                            new UsernamePasswordAuthenticationToken(user, null, List.of());
+                    if (user != null && String.valueOf(user.id()).equals(subject)) {
+                        UsernamePasswordAuthenticationToken auth =
+                                new UsernamePasswordAuthenticationToken(user, null, List.of());
 
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
+                } catch (IllegalArgumentException e) {
+                    // invalid UUID in token (e.g. legacy numeric ID) — treat as unauthenticated
                 }
             }
         }

@@ -9,7 +9,8 @@ import PublicOnlyRoute from "@/pages/PublicOnlyRoute";
 import HomePage from "@/pages/home/HomePage";
 import SignUpPage from "@/pages/login/SignUpPage";
 
-import UsersPage from "@/pages/UsersPage";
+import DashboardPage from "@/pages/home/DashboardPage";
+import UsersPage from "@/pages/user/UsersPage";
 import FileUploadPage from "@/pages/upload/FileUploadPage";
 import PersonPage from "@/pages/person/PersonPage";
 import TagPage from "@/pages/Tag/TagPage";
@@ -43,6 +44,15 @@ export const publicPages: PageConfig[] = [
 ];
 
 export const pages: PageConfig[] = [
+    {
+        path: "/home",
+        component: DashboardPage,
+        meta: {
+            title: "홈",
+            requiresAuth: true,
+            permissions: ["admin"],
+        },
+    },
     {
         path: "/users",
         component: UsersPage,

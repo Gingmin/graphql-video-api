@@ -9,7 +9,7 @@ const ADD_TAG = gql`
             id
             code
             createdAt
-            modifedAt
+            modifiedAt
         }
     }
 `;
@@ -61,7 +61,7 @@ const TAG = gql`
             modifiedAt
             translations {
                 id
-                tagId
+                targetId
                 language
                 name
                 createdAt
@@ -71,11 +71,11 @@ const TAG = gql`
     }
 `;
 
-const ADD_TAG_TRNASLATION = gql`
-    mutation AddTagTranslation($tagId: ID!, $language: String!, $name: String!) {
-        addTagTranslation(tagId: $tagId, language: $language, name: $name) {
+const ADD_TRANSLATION = gql`
+    mutation AddTranslation($targetId: ID!, $language: String!, $name: String!) {
+        addTranslation(targetId: $targetId, language: $language, name: $name) {
             id
-            tagId
+            targetId
             language
             name
             createdAt
@@ -84,9 +84,9 @@ const ADD_TAG_TRNASLATION = gql`
     }
 `;
 
-const MODIFY_TAG_TRNASLATION = gql`
-    mutation ModifyTagTranslation($id: ID!, $language: String!, $name: String!) {
-        modifyTagTranslation(id: $id, language: $language, name: $name) {
+const MODIFY_TRANSLATION = gql`
+    mutation ModifyTranslation($id: ID!, $language: String!, $name: String!) {
+        modifyTranslation(id: $id, language: $language, name: $name) {
             id
             language
             name
@@ -96,9 +96,9 @@ const MODIFY_TAG_TRNASLATION = gql`
     }
 `;
 
-const DELETE_TAG_TRNASLATION = gql`
-    mutation DeleteTagTranslation($id: ID!) {
-        deleteTagTranslation(id: $id)
+const DELETE_TRANSLATION = gql`
+    mutation DeleteTranslation($id: ID!) {
+        deleteTranslation(id: $id)
     }
 `;
 
@@ -170,11 +170,11 @@ export const useDeleteTag = (thenFn?: () => void) => {
 export const useAddTagTranslation = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (vars: { tagId: string; language: string; name: string }) => {
-            return gqlClient.request(ADD_TAG_TRNASLATION, vars);
+        mutationFn: (vars: { targetId: string; language: string; name: string }) => {
+            return gqlClient.request(ADD_TRANSLATION, vars);
         },
         onSuccess: (_data, vars) => {
-            queryClient.invalidateQueries({ queryKey: ["tag", vars.tagId] });
+            queryClient.invalidateQueries({ queryKey: ["tag", vars.targetId] });
             thenFn?.();
         },
         onError: (error: any) => {
@@ -186,11 +186,11 @@ export const useAddTagTranslation = (thenFn?: () => void) => {
 export const useModifyTagTranslation = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (vars: { id: string; tagId: string; language: string; name: string }) => {
-            return gqlClient.request(MODIFY_TAG_TRNASLATION, vars);
+        mutationFn: (vars: { id: string; targetId: string; language: string; name: string }) => {
+            return gqlClient.request(MODIFY_TRANSLATION, vars);
         },
         onSuccess: (_data, vars) => {
-            queryClient.invalidateQueries({ queryKey: ["tag", vars.tagId] });
+            queryClient.invalidateQueries({ queryKey: ["tag", vars.targetId] });
             thenFn?.();
         },
         onError: (error: any) => {
@@ -203,7 +203,7 @@ export const useDeleteTagTranslation = (tagId: string, thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id: string) => {
-            return gqlClient.request(DELETE_TAG_TRNASLATION, { id });
+            return gqlClient.request(DELETE_TRANSLATION, { id });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tag", tagId] });

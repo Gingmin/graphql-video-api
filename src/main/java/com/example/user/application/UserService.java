@@ -23,6 +23,19 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
+    @Transactional(readOnly = true)
+    public UserPage users(Integer page, Integer size) {
+        int p = page == null ? 1 : page;
+        int s = size == null ? 20 : size;
+        if (p < 1) {
+            throw new IllegalArgumentException("page must be greater than or equal to 1");
+        }
+        if (s < 1 || s > 100) {
+            throw new IllegalArgumentException("size must be between 1 and 100");
+        }
+        return userRepository.findPage(p, s);
+    }
+
     @Transactional
     public User signUp(String name, String email, String password) {
         if (name == null || name.isBlank()) {
@@ -63,7 +76,7 @@ public class UserService {
         }
 
         User user = auth.user();
-        String id = String.valueOf(user.id());
+        String id = user.id().toString();
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", id);
@@ -78,6 +91,6 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getById(String id) {
-        return userRepository.findById(Long.parseLong(id)).orElseThrow(() -> new IllegalArgumentException("user not found"));
+        return userRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("user not found"));
     }
 }

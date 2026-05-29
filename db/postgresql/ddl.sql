@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     email varchar(255) not null,
     name varchar(100) not null,
     password varchar(255) not null,
@@ -27,7 +27,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS "uq_users_email" ON users(email) WHERE is_dele
 DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     name varchar(255) not null,
     original_name varchar(255) not null,
     path text not null,
@@ -53,11 +53,11 @@ COMMENT ON TABLE files IS '파일';
 DROP TABLE IF EXISTS profiles CASCADE;
 CREATE TABLE profiles
 (
-    id bigserial primary key,
-    user_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid not null,
     name varchar(255) not null,
     profile_type varchar(15) not null check (profile_type in ('GENERAL', 'KIDS')),
-    thumbnail_file_id bigint,
+    thumbnail_file_id uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -77,13 +77,13 @@ COMMENT ON TABLE profiles IS '프로필';
 DROP TABLE IF EXISTS contents CASCADE;
 CREATE TABLE contents
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     content_type varchar(15) not null check (content_type in ('MOVIE', 'SERIES')),
     title varchar(255) not null,
     description text,
     age_rating varchar(10) not null check (age_rating in ('ALL', '12', '15', '19')),
-    thumbnail_file_id bigint,
-    trailer_file_id bigint,
+    thumbnail_file_id uuid,
+    trailer_file_id uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false
@@ -103,9 +103,9 @@ COMMENT ON TABLE contents IS '콘텐츠';
 DROP TABLE IF EXISTS wishlists CASCADE;
 CREATE TABLE wishlists
 (
-    id bigserial primary key,
-    content_id bigint not null,
-    profile_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
+    profile_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -123,7 +123,7 @@ COMMENT ON TABLE wishlists IS '찜목록';
 DROP TABLE IF EXISTS evaluation_codes CASCADE;
 CREATE TABLE evaluation_codes
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     evaluation varchar(15) not null check (evaluation in ('EXCELLENT', 'LIKE', 'DISLIKE')),
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -144,10 +144,10 @@ values ('EXCELLENT'), ('LIKE'), ('DISLIKE');
 DROP TABLE IF EXISTS evaluations CASCADE;
 CREATE TABLE evaluations
 (
-    id bigserial primary key,
-    evaluation_codes_id bigint not null,
-    content_id bigint not null,
-    profile_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    evaluation_codes_id uuid not null,
+    content_id uuid not null,
+    profile_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -166,8 +166,8 @@ COMMENT ON TABLE evaluations IS '평가';
 DROP TABLE IF EXISTS videos CASCADE;
 CREATE TABLE videos
 (
-    id bigserial primary key,
-    video_file_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    video_file_id uuid not null,
     cumulative_viewing_time bigint,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -184,10 +184,10 @@ COMMENT ON TABLE videos IS '비디오';
 DROP TABLE IF EXISTS subtitles CASCADE;
 CREATE TABLE subtitles
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     language_type varchar(10) not null check (language_type in ('KO', 'EN')),
-    subtitle_file_id bigint not null,
-    video_id bigint,
+    subtitle_file_id uuid not null,
+    video_id uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -206,10 +206,10 @@ COMMENT ON TABLE subtitles IS '자막';
 DROP TABLE IF EXISTS movies CASCADE;
 CREATE TABLE movies
 (
-    id bigserial primary key,
-    content_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
     duration_seconds integer not null,
-    video_id bigint not null,
+    video_id uuid not null,
     release_date date,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -228,8 +228,8 @@ COMMENT ON TABLE movies IS '영화';
 DROP TABLE IF EXISTS series CASCADE;
 CREATE TABLE series
 (
-    id bigserial primary key,
-    content_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false
@@ -244,8 +244,8 @@ COMMENT ON TABLE series IS '시리즈';
 DROP TABLE IF EXISTS seasons CASCADE;
 CREATE TABLE seasons
 (
-    id bigserial primary key,
-    series_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    series_id uuid not null,
     season_number integer not null,
     title varchar(255) not null,
     description text,
@@ -268,13 +268,13 @@ COMMENT ON TABLE seasons IS '시즌';
 DROP TABLE IF EXISTS episodes CASCADE;
 CREATE TABLE episodes
 (
-    id bigserial primary key,
-    season_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    season_id uuid not null,
     episode_number integer not null,
     title varchar(255) not null,
     description text,
     duration_seconds integer not null,
-    video_id bigint not null,
+    video_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -296,7 +296,7 @@ COMMENT ON TABLE episodes IS '에피소드';
 DROP TABLE IF EXISTS genres CASCADE;
 CREATE TABLE genres
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     code varchar(50) not null unique,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -312,9 +312,9 @@ COMMENT ON TABLE genres IS '장르';
 DROP TABLE IF EXISTS content_genres CASCADE;
 CREATE TABLE content_genres
 (
-    id bigserial primary key,
-    content_id bigint not null,
-    genre_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
+    genre_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -329,32 +329,32 @@ COMMENT ON COLUMN content_genres.is_deleted IS '삭제여부';
 COMMENT ON CONSTRAINT uq_content_genres_content_id_and_genre_id ON content_genres IS '콘텐츠 아이디와 장르 아이디 고유 제약조건';
 COMMENT ON TABLE content_genres IS '콘텐츠_장르';
 
-DROP TABLE IF EXISTS genre_translation CASCADE;
-CREATE TABLE genre_translation
+DROP TABLE IF EXISTS translations CASCADE;
+CREATE TABLE translations
 (
-    id bigserial primary key,
-    genre_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    target_id uuid not null,
     language varchar(10) not null check (language in ('KO', 'EN')),
     name varchar(255) not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
-    CONSTRAINT uq_genre_translation_genre_id_and_language UNIQUE (genre_id, language)
+    CONSTRAINT uq_translations_target_id_and_language UNIQUE (target_id, language)
 );
-COMMENT ON COLUMN genre_translation.id IS 'id';
-COMMENT ON COLUMN genre_translation.genre_id IS '장르 (아이디)';
-COMMENT ON COLUMN genre_translation.language IS '언어';
-COMMENT ON COLUMN genre_translation.name IS '이름';
-COMMENT ON COLUMN genre_translation.created_at IS '생성일';
-COMMENT ON COLUMN genre_translation.modified_at IS '수정일';
-COMMENT ON COLUMN genre_translation.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_genre_translation_genre_id_and_language ON genre_translation IS '장르 아이디와 언어 고유 제약조건';
-COMMENT ON TABLE genre_translation IS '장르 번역';
+COMMENT ON COLUMN translations.id IS 'id';
+COMMENT ON COLUMN translations.target_id IS '대상 (UUID)';
+COMMENT ON COLUMN translations.language IS '언어';
+COMMENT ON COLUMN translations.name IS '이름';
+COMMENT ON COLUMN translations.created_at IS '생성일';
+COMMENT ON COLUMN translations.modified_at IS '수정일';
+COMMENT ON COLUMN translations.is_deleted IS '삭제여부';
+COMMENT ON CONSTRAINT uq_translations_target_id_and_language ON translations IS '대상 UUID와 언어 고유 제약조건';
+COMMENT ON TABLE translations IS '번역';
 
 DROP TABLE IF EXISTS tags CASCADE;
 CREATE TABLE tags
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     code varchar(50) not null unique,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -372,9 +372,9 @@ COMMENT ON TABLE tags IS '태그';
 DROP TABLE IF EXISTS content_tags CASCADE;
 CREATE TABLE content_tags
 (
-    id bigserial primary key,
-    content_id bigint not null,
-    tag_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
+    tag_id uuid not null,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -389,32 +389,10 @@ COMMENT ON COLUMN content_tags.is_deleted IS '삭제여부';
 COMMENT ON CONSTRAINT uq_content_tags_content_id_and_tag_id ON content_tags IS '콘텐츠 아이디와 태그 아이디 고유 제약조건';
 COMMENT ON TABLE content_tags IS '콘텐츠_태그';
 
-DROP TABLE IF EXISTS tag_translation CASCADE;
-CREATE TABLE tag_translation
-(
-    id bigserial primary key,
-    tag_id bigint not null,
-    language varchar(10) not null check (language in ('KO', 'EN')),
-    name varchar(255) not null,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    CONSTRAINT uq_tag_translation_tag_id_and_language UNIQUE (tag_id, language)
-);
-COMMENT ON COLUMN tag_translation.id IS 'id';
-COMMENT ON COLUMN tag_translation.tag_id IS '태그 (아이디)';
-COMMENT ON COLUMN tag_translation.language IS '언어';
-COMMENT ON COLUMN tag_translation.name IS '이름';
-COMMENT ON COLUMN tag_translation.created_at IS '생성일';
-COMMENT ON COLUMN tag_translation.modified_at IS '수정일';
-COMMENT ON COLUMN tag_translation.is_deleted IS '삭제여부';
-COMMENT ON CONSTRAINT uq_tag_translation_tag_id_and_language ON tag_translation IS '태그 아이디와 언어 고유 제약조건';
-COMMENT ON TABLE tag_translation IS '태그 번역';
-
 DROP TABLE IF EXISTS persons CASCADE;
 CREATE TABLE persons
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     code varchar(50) not null unique,
     birth_date date,
     nationality varchar(50),
@@ -431,32 +409,10 @@ COMMENT ON COLUMN persons.modified_at IS '수정일';
 COMMENT ON COLUMN persons.is_deleted IS '삭제여부';
 COMMENT ON TABLE persons IS '인물';
 
-DROP TABLE IF EXISTS person_translation CASCADE;
-CREATE TABLE person_translation
-(
-    id bigserial primary key,
-    person_id bigint not null,
-    language varchar(10) not null check (language in ('KO', 'EN')),
-    name varchar(255) not null,
-    created_at timestamptz not null default now(),
-    modified_at timestamptz not null default now(),
-    is_deleted boolean not null default false,
-    CONSTRAINT uq_person_translation_person_id_and_language UNIQUE (person_id, language)
-);
-COMMENT ON COLUMN person_translation.id IS 'id';
-COMMENT ON COLUMN person_translation.person_id IS '인물 (아이디)';
-COMMENT ON COLUMN person_translation.language IS '언어';
-COMMENT ON COLUMN person_translation.name IS '이름';
-COMMENT ON COLUMN person_translation.created_at IS '생성일';
-COMMENT ON COLUMN person_translation.modified_at IS '수정일';
-COMMENT ON COLUMN person_translation.is_deleted IS '삭제 여부';
-COMMENT ON CONSTRAINT uq_person_translation_person_id_and_language ON person_translation IS '인물 아이디와 언어 고유 제약조건';
-COMMENT ON TABLE person_translation IS '인물 번역';
-
 DROP TABLE IF EXISTS role_type_codes CASCADE;
 CREATE TABLE role_type_codes 
 (
-    id bigserial primary key,
+    id uuid primary key default gen_random_uuid(),
     code varchar(50) not null unique check (code in ('ACTOR', 'DIRECTOR', 'SCREENWRITER')),
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -474,10 +430,10 @@ INSERT INTO role_type_codes (code) VALUES ('ACTOR'), ('DIRECTOR'), ('SCREENWRITE
 DROP TABLE IF EXISTS content_persons CASCADE;
 CREATE TABLE content_persons
 (
-    id bigserial primary key,
-    content_id bigint not null,
-    person_id bigint not null,
-    role_type_code_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    content_id uuid not null,
+    person_id uuid not null,
+    role_type_code_id uuid not null,
     role_name varchar(255),
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
@@ -496,11 +452,11 @@ COMMENT ON TABLE content_persons IS '콘텐츠_인물';
 DROP TABLE IF EXISTS episode_watching CASCADE;
 CREATE TABLE episode_watching
 (
-    id bigserial primary key,
-    profile_id bigint not null,
-    episode_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    profile_id uuid not null,
+    episode_id uuid not null,
     timeline integer not null,
-    subtitle_id bigint,
+    subtitle_id uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,
@@ -520,11 +476,11 @@ COMMENT ON TABLE episode_watching IS '에피소드 시청중';
 DROP TABLE IF EXISTS movie_watching CASCADE;
 CREATE TABLE movie_watching
 (
-    id bigserial primary key,
-    profile_id bigint not null,
-    movie_id bigint not null,
+    id uuid primary key default gen_random_uuid(),
+    profile_id uuid not null,
+    movie_id uuid not null,
     timeline integer not null,
-    subtitle_id bigint,
+    subtitle_id uuid,
     created_at timestamptz not null default now(),
     modified_at timestamptz not null default now(),
     is_deleted boolean not null default false,

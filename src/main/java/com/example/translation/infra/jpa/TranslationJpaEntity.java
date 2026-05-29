@@ -1,4 +1,4 @@
-package com.example.person.infra.jpa;
+package com.example.translation.infra.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,16 +9,17 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
-@Table(name = "person_translation")
-public class PersonTranslationJpaEntity {
+@Table(name = "translations")
+public class TranslationJpaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @Column(name = "person_id", nullable = false)
-    private Long personId;
+    @Column(name = "target_id", nullable = false)
+    private UUID targetId;
 
     @Column(nullable = false, length = 10)
     private String language;
@@ -35,10 +36,10 @@ public class PersonTranslationJpaEntity {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    protected PersonTranslationJpaEntity() {}
+    protected TranslationJpaEntity() {}
 
-    public PersonTranslationJpaEntity(Long personId, String language, String name) {
-        this.personId = personId;
+    public TranslationJpaEntity(UUID targetId, String language, String name) {
+        this.targetId = targetId;
         this.language = language;
         this.name = name;
     }
@@ -58,8 +59,8 @@ public class PersonTranslationJpaEntity {
         modifiedAt = Instant.now();
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setTargetId(UUID targetId) {
+        this.targetId = targetId;
     }
 
     public void setLanguage(String language) {
@@ -70,9 +71,9 @@ public class PersonTranslationJpaEntity {
         this.name = name;
     }
 
-    public Long getId() { return id; }
+    public UUID getId() { return id; }
 
-    public Long getPersonId() { return personId; }
+    public UUID getTargetId() { return targetId; }
 
     public String getLanguage() { return language; }
 

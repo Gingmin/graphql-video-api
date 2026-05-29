@@ -255,7 +255,7 @@ function FileUploadPage() {
         <div className="file-upload-page">
             <h1>FileUploadPage</h1>
 
-            <button onClick={() => navigate("/users")}>Users</button>
+            <button className="go-button" onClick={() => navigate("/home")}>Home</button>
 
             <div className="mode-toggle">
                 <button

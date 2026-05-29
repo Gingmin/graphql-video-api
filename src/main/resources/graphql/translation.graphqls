@@ -1,0 +1,19 @@
+extend type Query {
+    translations(targetId: ID!): [Translation!]!
+    translation(id: ID!): Translation
+}
+
+extend type Mutation {
+    addTranslation(targetId: ID!, language: String!, name: String!): Translation!
+    modifyTranslation(id: ID!, language: String!, name: String!): Translation!
+    deleteTranslation(id: ID!): Boolean!
+}
+
+type Translation {
+    id: ID!
+    targetId: ID!
+    language: String!
+    name: String!
+    createdAt: String
+    modifiedAt: String
+}

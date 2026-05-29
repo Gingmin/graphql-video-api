@@ -3,11 +3,10 @@ package com.example.person.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import com.example.person.domain.Person;
-import com.example.person.application.PersonPage;
 
 @Service
 public class PersonService {
@@ -36,7 +35,7 @@ public class PersonService {
     }
 
     @Transactional(readOnly = true)
-    public Person person(Long id) {
+    public Person person(UUID id) {
         return personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("person not found"));
     }
 
@@ -52,7 +51,7 @@ public class PersonService {
     }
 
     @Transactional
-    public Person modifyPerson(Long id, String code, LocalDate birthDate, String nationality) {
+    public Person modifyPerson(UUID id, String code, LocalDate birthDate, String nationality) {
         if (code == null || code.isBlank()) {
             throw new IllegalArgumentException("code must not be blank");
         }
@@ -60,7 +59,7 @@ public class PersonService {
     }
 
     @Transactional
-    public boolean deletePerson(Long id) {
+    public boolean deletePerson(UUID id) {
         if (id == null) {
             throw new IllegalArgumentException("id must not be null");
         }

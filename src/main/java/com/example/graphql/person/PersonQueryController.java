@@ -4,9 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 
-import com.example.person.domain.Person;
 import com.example.graphql.PageInfoGql;
 import com.example.person.application.PersonService;
+
+import java.util.UUID;
 
 @Controller
 public class PersonQueryController {
@@ -37,6 +38,6 @@ public class PersonQueryController {
 
     @QueryMapping
     public PersonGql person(@Argument("id") String id) {
-        return PersonMapper.toGql(personService.person(Long.parseLong(id)));
+        return PersonMapper.toGql(personService.person(UUID.fromString(id)));
     }
 }

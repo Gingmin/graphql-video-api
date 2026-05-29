@@ -70,7 +70,7 @@ const PERSON = gql`
             modifiedAt
             translations {
                 id
-                personId
+                targetId
                 language
                 name
                 createdAt
@@ -80,11 +80,11 @@ const PERSON = gql`
     }
 `;
 
-const ADD_PERSON_TRANSLATION = gql`
-    mutation AddPersonTranslation($personId: ID!, $language: String!, $name: String!) {
-        addPersonTranslation(personId: $personId, language: $language, name: $name) {
+const ADD_TRANSLATION = gql`
+    mutation AddTranslation($targetId: ID!, $language: String!, $name: String!) {
+        addTranslation(targetId: $targetId, language: $language, name: $name) {
             id
-            personId
+            targetId
             language
             name
             createdAt
@@ -93,9 +93,9 @@ const ADD_PERSON_TRANSLATION = gql`
     }
 `;
 
-const MODIFY_PERSON_TRANSLATION = gql`
-    mutation ModifyPersonTranslation($id: ID!, $language: String!, $name: String!) {
-        modifyPersonTranslation(id: $id, language: $language, name: $name) {
+const MODIFY_TRANSLATION = gql`
+    mutation ModifyTranslation($id: ID!, $language: String!, $name: String!) {
+        modifyTranslation(id: $id, language: $language, name: $name) {
             id
             language
             name
@@ -105,9 +105,9 @@ const MODIFY_PERSON_TRANSLATION = gql`
     }
 `;
 
-const DELETE_PERSON_TRANSLATION = gql`
-    mutation DeletePersonTranslation($id: ID!) {
-        deletePersonTranslation(id: $id)
+const DELETE_TRANSLATION = gql`
+    mutation DeleteTranslation($id: ID!) {
+        deleteTranslation(id: $id)
     }
 `;
 
@@ -179,11 +179,11 @@ export const useDeletePerson = (thenFn?: () => void) => {
 export const useAddPersonTranslation = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (vars: { personId: string; language: string; name: string }) => {
-            return gqlClient.request(ADD_PERSON_TRANSLATION, vars);
+        mutationFn: (vars: { targetId: string; language: string; name: string }) => {
+            return gqlClient.request(ADD_TRANSLATION, vars);
         },
         onSuccess: (_data, vars) => {
-            queryClient.invalidateQueries({ queryKey: ["person", vars.personId] });
+            queryClient.invalidateQueries({ queryKey: ["person", vars.targetId] });
             thenFn?.();
         },
         onError: (error: any) => {
@@ -195,11 +195,11 @@ export const useAddPersonTranslation = (thenFn?: () => void) => {
 export const useModifyPersonTranslation = (thenFn?: () => void) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (vars: { id: string; personId: string; language: string; name: string }) => {
-            return gqlClient.request(MODIFY_PERSON_TRANSLATION, vars);
+        mutationFn: (vars: { id: string; targetId: string; language: string; name: string }) => {
+            return gqlClient.request(MODIFY_TRANSLATION, vars);
         },
         onSuccess: (_data, vars) => {
-            queryClient.invalidateQueries({ queryKey: ["person", vars.personId] });
+            queryClient.invalidateQueries({ queryKey: ["person", vars.targetId] });
             thenFn?.();
         },
         onError: (error: any) => {
@@ -212,7 +212,7 @@ export const useDeletePersonTranslation = (personId: string, thenFn?: () => void
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id: string) => {
-            return gqlClient.request(DELETE_PERSON_TRANSLATION, { id });
+            return gqlClient.request(DELETE_TRANSLATION, { id });
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["person", personId] });

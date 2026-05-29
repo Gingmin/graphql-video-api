@@ -1,5 +1,11 @@
 extend type Query {
     me: User
+    users(page: Int = 1, size: Int = 20): UserPage!
+}
+
+type UserPage {
+    items: [User!]!
+    pageInfo: PageInfo!
 }
 
 extend type Mutation {

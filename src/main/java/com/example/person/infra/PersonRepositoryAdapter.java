@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.time.LocalDate;
 
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +52,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
             );
         }
 
-        var items = persons.stream().map(p -> toDomain(p)).toList();
+        var items = persons.stream().map(PersonRepositoryAdapter::toDomain).toList();
 
         return new PersonPage(
             items,
@@ -65,7 +66,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
     }
 
     @Override
-    public Optional<Person> findById(Long id) {
+    public Optional<Person> findById(UUID id) {
         return jpaRepository.findById(id).map(PersonRepositoryAdapter::toDomain);
     }
 
@@ -76,7 +77,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
     }
 
     @Override
-    public Person modifyPerson(Long id, String code, LocalDate birthDate, String nationality) {
+    public Person modifyPerson(UUID id, String code, LocalDate birthDate, String nationality) {
         var entity = jpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("person not found"));
 
         entity.setCode(code);
@@ -87,7 +88,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
     }
 
     @Override
-    public boolean deletePerson(Long id) {
+    public boolean deletePerson(UUID id) {
         jpaRepository.deleteById(id);
         return true;
     }

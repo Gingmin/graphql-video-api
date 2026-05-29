@@ -72,17 +72,37 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="common-page">
+        <div className="api-page">
             <h1>Sign Up Page</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} ref={nameInputRef} />
-                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} ref={emailInputRef} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} ref={passwordInputRef} />
-                <button type="submit">Sign Up</button>
-            </form>
-            <button type="button" onClick={() => navigate("/login")}>
-                Login
-            </button>
+
+            <div className="button-container">
+                <div>
+                    <button className="go-button" onClick={() => navigate("/login")}>
+                        Login
+                    </button>
+                </div>
+            </div>
+
+            <div className="add-api-container">
+                <div className="add-api-form">
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <input className="input-field" type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} ref={nameInputRef} />
+                        </div>
+                        <div>
+                            <input className="input-field" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} ref={emailInputRef} />
+                        </div>
+                        <div>
+                            <input className="input-field" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} ref={passwordInputRef} />
+                        </div>
+                        <div>
+                            <button className="confirm-button" type="submit">
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }

@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { DateUtil } from "@/utils/date-util";
 import { useAddPerson, useDeletePerson, useModifyPerson, usePerson, usePersons, useAddPersonTranslation, useModifyPersonTranslation, useDeletePersonTranslation } from "@/hooks/usePerson";
 
-type PersonTranslation = {
+type Translation = {
     id: string;
-    personId: string;
+    targetId: string;
     language: string;
     name: string;
     createdAt?: string;
@@ -21,7 +21,7 @@ type Person = {
     nationality?: string;
     createdAt?: string;
     modifiedAt?: string;
-    translations?: PersonTranslation[];
+    translations?: Translation[];
 };
 
 function PersonPage() {
@@ -43,7 +43,7 @@ function PersonPage() {
     // -------------------- translation form state ------------------------
     const [transLanguage, setTransLanguage] = useState("KO");
     const [transName, setTransName] = useState("");
-    const [editingTranslation, setEditingTranslation] = useState<PersonTranslation | null>(null);
+    const [editingTranslation, setEditingTranslation] = useState<Translation | null>(null);
     const [editTransLanguage, setEditTransLanguage] = useState("");
     const [editTransName, setEditTransName] = useState("");
 
@@ -62,7 +62,7 @@ function PersonPage() {
         }
     }, [personQuery.data]);
 
-    const translations: PersonTranslation[] = personQuery.data?.person?.translations ?? [];
+    const translations: Translation[] = personQuery.data?.person?.translations ?? [];
 
     // -------------------- add person ------------------------
     const addPersonMutation = useAddPerson(() => {
@@ -127,13 +127,13 @@ function PersonPage() {
             return;
         }
         addTransMutation.mutate({
-            personId: selectedPerson.id,
+            targetId: selectedPerson.id,
             language: transLanguage,
             name: transName,
         });
     };
 
-    const handleStartEditTranslation = (trans: PersonTranslation) => {
+    const handleStartEditTranslation = (trans: Translation) => {
         setEditingTranslation(trans);
         setEditTransLanguage(trans.language);
         setEditTransName(trans.name);
@@ -145,7 +145,7 @@ function PersonPage() {
         }
         modifyTransMutation.mutate({
             id: editingTranslation.id,
-            personId: selectedPerson.id,
+            targetId: selectedPerson.id,
             language: editTransLanguage,
             name: editTransName,
         });
@@ -197,8 +197,8 @@ function PersonPage() {
 
             <div className="button-container">
                 <div>
-                    <button className="go-button" onClick={() => navigate("/users")}>
-                        Users
+                    <button className="go-button" onClick={() => navigate("/home")}>
+                        Home
                     </button>
                 </div>
             </div>

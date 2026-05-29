@@ -6,7 +6,7 @@ const PublicOnlyRoute = ({ children }: { children: React.ReactNode }) => {
     const userId = useAppSelector((state) => state.userSlice.id);
 
     if (userId) {
-        return <Navigate to="/users" replace />;
+        return <Navigate to="/home" replace />;
     }
 
     return children;

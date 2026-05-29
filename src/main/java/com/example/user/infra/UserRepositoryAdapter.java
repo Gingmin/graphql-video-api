@@ -1,13 +1,15 @@
 package com.example.user.infra;
 
+import com.example.user.application.UserPage;
 import com.example.user.application.UserRepository;
 import com.example.user.domain.User;
 import com.example.user.infra.jpa.UserJpaEntity;
 import com.example.user.infra.jpa.UserJpaRepository;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 import java.util.UUID;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 import java.time.Instant;
 
 @Repository
@@ -16,6 +18,37 @@ public class UserRepositoryAdapter implements UserRepository {
 
     public UserRepositoryAdapter(UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public UserPage findPage(Integer page, Integer size) {
+        var pageable = PageRequest.of(page - 1, size);
+        var pageResult = jpaRepository.findPage(pageable);
+        var users = pageResult.getContent();
+
+        if (users.isEmpty()) {
+            return new UserPage(
+                List.of(),
+                pageResult.getNumber() + 1,
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages(),
+                pageResult.hasNext(),
+                pageResult.hasPrevious()
+            );
+        }
+
+        var items = users.stream().map(UserRepositoryAdapter::toDomain).toList();
+
+        return new UserPage(
+            items,
+            pageResult.getNumber() + 1,
+            pageResult.getSize(),
+            pageResult.getTotalElements(),
+            pageResult.getTotalPages(),
+            pageResult.hasNext(),
+            pageResult.hasPrevious()
+        );
     }
 
     @Override
@@ -30,7 +63,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public void login(long id, String clientIp) {
+    public void login(UUID id, String clientIp) {
         var entity = jpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found"));
 
         entity.setLatestLoginIp(clientIp);
@@ -44,7 +77,7 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(long id) {
+    public Optional<User> findById(UUID id) {
         return jpaRepository.findById(id).map(UserRepositoryAdapter::toDomain);
     }
 
