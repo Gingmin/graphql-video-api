@@ -32,14 +32,14 @@ public class TranslationRepositoryAdapter implements TranslationRepository {
 
     @Override
     public List<Translation> findByTargetId(UUID targetId) {
-        return jpaRepository.findByTargetId(targetId).stream()
+        return jpaRepository.findActiveByTargetId(targetId).stream()
             .map(TranslationRepositoryAdapter::toDomain)
             .toList();
     }
 
     @Override
     public Optional<Translation> findById(UUID id) {
-        return jpaRepository.findById(id).map(TranslationRepositoryAdapter::toDomain);
+        return jpaRepository.findActiveById(id).map(TranslationRepositoryAdapter::toDomain);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class TranslationRepositoryAdapter implements TranslationRepository {
 
     @Override
     public Translation modify(UUID id, String language, String name) {
-        var entity = jpaRepository.findById(id)
+        var entity = jpaRepository.findActiveById(id)
             .orElseThrow(() -> new IllegalArgumentException("translation not found"));
         entity.setLanguage(language);
         entity.setName(name);
@@ -59,7 +59,10 @@ public class TranslationRepositoryAdapter implements TranslationRepository {
 
     @Override
     public boolean delete(UUID id) {
-        jpaRepository.deleteById(id);
+        var entity = jpaRepository.findActiveById(id)
+            .orElseThrow(() -> new IllegalArgumentException("translation not found"));
+        entity.setDeleted(true);
+        jpaRepository.save(entity);
         return true;
     }
 }

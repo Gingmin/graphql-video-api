@@ -84,4 +84,6 @@ public class TranslationJpaEntity {
     public Instant getModifiedAt() { return modifiedAt; }
 
     public boolean isDeleted() { return isDeleted; }
+
+    public void setDeleted(boolean deleted) { this.isDeleted = deleted; }
 }

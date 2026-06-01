@@ -1,4 +1,4 @@
-package com.example.tag.infra.jpa;
+package com.example.genre.infra.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,8 +12,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tags")
-public class TagJpaEntity {
+@Table(name = "genres")
+public class GenreJpaEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -29,10 +30,10 @@ public class TagJpaEntity {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
+    
+    protected GenreJpaEntity() {}
 
-    protected TagJpaEntity() {}
-
-    public TagJpaEntity(String code) {
+    public GenreJpaEntity(String code) {
         this.code = code;
     }
 

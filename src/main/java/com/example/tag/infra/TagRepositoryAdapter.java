@@ -59,7 +59,7 @@ public class TagRepositoryAdapter implements TagRepository {
 
     @Override
     public Optional<Tag> findById(UUID id) {
-        return jpaRepository.findById(id).map(TagRepositoryAdapter::toDomain);
+        return jpaRepository.findActiveById(id).map(TagRepositoryAdapter::toDomain);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TagRepositoryAdapter implements TagRepository {
 
     @Override
     public Tag modifyTag(UUID id, String name) {
-        var entity = jpaRepository.findById(id)
+        var entity = jpaRepository.findActiveById(id)
             .orElseThrow(() -> new IllegalArgumentException("tag not found"));
         entity.setCode(name);
         var saved = jpaRepository.save(entity);
@@ -79,7 +79,10 @@ public class TagRepositoryAdapter implements TagRepository {
 
     @Override
     public boolean deleteTag(UUID id) {
-        jpaRepository.deleteById(id);
+        var entity = jpaRepository.findActiveById(id)
+            .orElseThrow(() -> new IllegalArgumentException("tag not found"));
+        entity.setDeleted(true);
+        jpaRepository.save(entity);
         return true;
     }
 

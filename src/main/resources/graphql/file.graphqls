@@ -1,0 +1,25 @@
+extend type Query {
+    files(page: Int = 1, size: Int = 20): FilePage!
+    file(id: ID!): File
+}
+
+extend type Mutation {
+    deleteFile(id: ID!): Boolean!
+}
+
+type File {
+    id: ID!
+    name: String!
+    originalName: String!
+    path: String!
+    extension: String!
+    mimeType: String!
+    fileSize: String!
+    createdAt: String
+    modifiedAt: String
+}
+
+type FilePage {
+    items: [File!]!
+    pageInfo: PageInfo!
+}

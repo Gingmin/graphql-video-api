@@ -9,10 +9,12 @@ import java.util.UUID;
 
 public interface PersonJpaRepository extends JpaRepository<PersonJpaEntity, UUID> {
 
-    @Query("SELECT p FROM PersonJpaEntity p ORDER BY p.createdAt DESC")
+    @Query("SELECT p FROM PersonJpaEntity p WHERE p.isDeleted = false ORDER BY p.createdAt DESC")
     Page<PersonJpaEntity> findPage(Pageable pageable);
 
-    Optional<PersonJpaEntity> findById(UUID id);
+    @Query("SELECT p FROM PersonJpaEntity p WHERE p.id = :id AND p.isDeleted = false")
+    Optional<PersonJpaEntity> findActiveById(UUID id);
 
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM PersonJpaEntity p WHERE p.code = :code AND p.isDeleted = false")
     boolean existsByCode(String code);
 }

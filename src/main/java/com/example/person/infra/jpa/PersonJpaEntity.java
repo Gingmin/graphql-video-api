@@ -34,6 +34,9 @@ public class PersonJpaEntity {
     @Column(name = "modified_at", nullable = false)
     private Instant modifiedAt;
 
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
+
     protected PersonJpaEntity() {}
 
     public PersonJpaEntity(String code, LocalDate birthDate, String nationality) {
@@ -91,5 +94,13 @@ public class PersonJpaEntity {
 
     public Instant getModifiedAt() {
         return modifiedAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.isDeleted = deleted;
     }
 }

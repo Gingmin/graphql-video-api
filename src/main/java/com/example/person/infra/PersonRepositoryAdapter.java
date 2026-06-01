@@ -67,7 +67,7 @@ public class PersonRepositoryAdapter implements PersonRepository {
 
     @Override
     public Optional<Person> findById(UUID id) {
-        return jpaRepository.findById(id).map(PersonRepositoryAdapter::toDomain);
+        return jpaRepository.findActiveById(id).map(PersonRepositoryAdapter::toDomain);
     }
 
     @Override
@@ -78,7 +78,8 @@ public class PersonRepositoryAdapter implements PersonRepository {
 
     @Override
     public Person modifyPerson(UUID id, String code, LocalDate birthDate, String nationality) {
-        var entity = jpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("person not found"));
+        var entity = jpaRepository.findActiveById(id)
+            .orElseThrow(() -> new IllegalArgumentException("person not found"));
 
         entity.setCode(code);
         entity.setBirthDate(birthDate);
@@ -89,7 +90,10 @@ public class PersonRepositoryAdapter implements PersonRepository {
 
     @Override
     public boolean deletePerson(UUID id) {
-        jpaRepository.deleteById(id);
+        var entity = jpaRepository.findActiveById(id)
+            .orElseThrow(() -> new IllegalArgumentException("person not found"));
+        entity.setDeleted(true);
+        jpaRepository.save(entity);
         return true;
     }
 

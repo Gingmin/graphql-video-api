@@ -73,12 +73,12 @@ public class UserRepositoryAdapter implements UserRepository {
 
     @Override
     public Optional<UserAuth> findAuthByEmail(String email) {
-        return jpaRepository.findByEmail(email).map(e -> new UserAuth(toDomain(e), e.getPassword()));
+        return jpaRepository.findActiveByEmail(email).map(e -> new UserAuth(toDomain(e), e.getPassword()));
     }
 
     @Override
     public Optional<User> findById(UUID id) {
-        return jpaRepository.findById(id).map(UserRepositoryAdapter::toDomain);
+        return jpaRepository.findActiveById(id).map(UserRepositoryAdapter::toDomain);
     }
 
     private static User toDomain(UserJpaEntity e) {

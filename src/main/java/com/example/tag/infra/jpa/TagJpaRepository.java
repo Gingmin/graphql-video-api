@@ -9,10 +9,12 @@ import java.util.UUID;
 
 public interface TagJpaRepository extends JpaRepository<TagJpaEntity, UUID> {
     
-    @Query("SELECT t FROM TagJpaEntity t ORDER BY t.createdAt DESC")
+    @Query("SELECT t FROM TagJpaEntity t WHERE t.isDeleted = false ORDER BY t.createdAt DESC")
     Page<TagJpaEntity> findPage(Pageable pageable);
 
-    Optional<TagJpaEntity> findById(UUID id);
+    @Query("SELECT t FROM TagJpaEntity t WHERE t.id = :id AND t.isDeleted = false")
+    Optional<TagJpaEntity> findActiveById(UUID id);
 
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM TagJpaEntity t WHERE t.code = :code AND t.isDeleted = false")
     boolean existsByCode(String code);
 }

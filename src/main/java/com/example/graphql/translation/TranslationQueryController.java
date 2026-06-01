@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 
 import com.example.graphql.person.PersonGql;
 import com.example.graphql.tag.TagGql;
+import com.example.graphql.genre.GenreGql;
+
 import com.example.translation.application.TranslationService;
 
 import java.util.List;
@@ -44,6 +46,13 @@ public class TranslationQueryController {
     @SchemaMapping(typeName = "Tag", field = "translations")
     public List<TranslationGql> tagTranslations(TagGql tag) {
         return translationService.findByTargetId(UUID.fromString(tag.id())).stream()
+            .map(TranslationMapper::toGql)
+            .toList();
+    }
+
+    @SchemaMapping(typeName = "Genre", field = "translations")
+    public List<TranslationGql> genreTranslations(GenreGql genre) {
+        return translationService.findByTargetId(UUID.fromString(genre.id())).stream()
             .map(TranslationMapper::toGql)
             .toList();
     }

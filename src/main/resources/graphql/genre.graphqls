@@ -1,0 +1,23 @@
+extend type Query {
+    genres(page: Int = 1, size: Int = 20): GenrePage!
+    genre(id: ID!): Genre
+}
+
+extend type Mutation {
+    addGenre(code: String!): Genre!
+    modifyGenre(id: ID!, code: String!): Genre!
+    deleteGenre(id: ID!): Boolean!
+}
+
+type Genre {
+    id: ID!
+    code: String
+    createdAt: String
+    modifiedAt: String
+    translations: [Translation!]!
+}
+
+type GenrePage {
+    items: [Genre!]!
+    pageInfo: PageInfo!
+}

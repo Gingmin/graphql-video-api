@@ -1,13 +1,10 @@
 package com.example.graphql.user;
 
+import com.example.graphql.GqlDateTimeFormat;
 import com.example.user.domain.User;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 final class UserMapper {
     private UserMapper() {}
-
-    private static final DateTimeFormatter ISO_INSTANT = DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC);
 
     static UserGql toGql(User user) {
         return new UserGql(
@@ -15,9 +12,9 @@ final class UserMapper {
             user.name(),
             user.email(),
             user.latestLoginIp(),
-            user.lastLoginDate() == null ? null : ISO_INSTANT.format(user.lastLoginDate()),
-            user.createdAt() == null ? null : ISO_INSTANT.format(user.createdAt()),
-            user.modifiedAt() == null ? null : ISO_INSTANT.format(user.modifiedAt())
+            GqlDateTimeFormat.formatOrNull(user.lastLoginDate()),
+            GqlDateTimeFormat.formatOrNull(user.createdAt()),
+            GqlDateTimeFormat.formatOrNull(user.modifiedAt())
         );
     }
 }

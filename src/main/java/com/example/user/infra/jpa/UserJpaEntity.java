@@ -122,4 +122,8 @@ public class UserJpaEntity {
     public boolean isDeleted() {
         return isDeleted;
     }
+
+    public void setDeleted(boolean deleted) {
+        this.isDeleted = deleted;
+    }
 }
