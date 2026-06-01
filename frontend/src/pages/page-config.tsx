@@ -12,8 +12,10 @@ import SignUpPage from "@/pages/login/SignUpPage";
 import DashboardPage from "@/pages/home/DashboardPage";
 import UsersPage from "@/pages/user/UsersPage";
 import FileUploadPage from "@/pages/upload/FileUploadPage";
+import FilePage from "@/pages/file/FilePage";
 import PersonPage from "@/pages/person/PersonPage";
 import TagPage from "@/pages/Tag/TagPage";
+import GenrePage from "@/pages/genre/GenrePage";
 
 export interface PageConfig {
     path: string;
@@ -72,6 +74,15 @@ export const pages: PageConfig[] = [
         },
     },
     {
+        path: "/files",
+        component: FilePage,
+        meta: {
+            title: "파일 관리",
+            requiresAuth: true,
+            permissions: ["admin"],
+        },
+    },
+    {
         path: "/person",
         component: PersonPage,
         meta: {
@@ -85,6 +96,15 @@ export const pages: PageConfig[] = [
         component: TagPage,
         meta: {
             title: "태그 관리",
+            requiresAuth: true,
+            permissions: ["admin"],
+        },
+    },
+    {
+        path: "/genre",
+        component: GenrePage,
+        meta: {
+            title: "장르 관리",
             requiresAuth: true,
             permissions: ["admin"],
         },

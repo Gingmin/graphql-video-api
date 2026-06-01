@@ -39,6 +39,12 @@ export default function DashboardPage() {
                 <button className="go-button" onClick={() => navigate("/tag")}>
                     Tag
                 </button>
+                <button className="go-button" onClick={() => navigate("/genre")}>
+                    Genre
+                </button>
+                <button className="go-button" onClick={() => navigate("/files")}>
+                    Files
+                </button>
                 <button className="go-button" onClick={() => navigate("/upload")}>
                     Upload
                 </button>

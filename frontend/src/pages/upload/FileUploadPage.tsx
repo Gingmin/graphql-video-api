@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 const IMAGE_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/tiff", "image/bmp", "image/webp", "image/svg+xml"];
 const VIDEO_ALLOWED_TYPES = ["video/mp4", "video/webm", "video/ogg", "video/webm", "video/quicktime", "video/x-msvideo"];
@@ -76,6 +77,7 @@ function Item({ item, mode, onRemove }: { item: FileItem; mode: typeof MODE_IMAG
 
 function FileUploadPage() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [mode, setMode] = useState<typeof MODE_IMAGE | typeof MODE_VIDEO>(MODE_IMAGE);
     const [files, setFiles] = useState<FileItem[]>([]);
     const [isDragging, setIsDragging] = useState(false);
@@ -237,6 +239,7 @@ function FileUploadPage() {
             setFiles((prev) => {
                 return prev.map((f) => (f.file.name === item.file.name ? { ...f, status: STATUS_DONE, progress: 100 } : f));
             });
+            queryClient.invalidateQueries({ queryKey: ["files"] });
             isResolve = true;
         } else {
             isResolve = false;
